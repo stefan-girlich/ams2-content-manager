@@ -4,5 +4,5 @@
 import { contextBridge, ipcRenderer } from 'electron'
 
 contextBridge.exposeInMainWorld('electronAPI', {
-    listMods: () => ipcRenderer.send('list-mods'),
+    listMods: () => ipcRenderer.invoke('list-mods'),
 })

@@ -36,13 +36,7 @@ app.on('ready', () => {
     createWindow()
 })
 
-// Attach listener in the main process with the given ID
-ipcMain.on('list-mods', async event => {
-    const files = await listModArchives()
-    console.log(files)
-    
-    event.sender.send('mainprocess-response', 'Hello World!')
-})
+ipcMain.handle('list-mods', () => listModArchives())
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
