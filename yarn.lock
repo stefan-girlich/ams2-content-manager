@@ -2,6 +2,18 @@
 # yarn lockfile v1
 
 
+"7zip-bin@5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/7zip-bin/-/7zip-bin-5.1.1.tgz#9274ec7460652f9c632c59addf24efb1684ef876"
+  integrity sha512-sAP4LldeWNz0lNzmTird3uWfFDWWTeg6V/MsmyyLR9X1idwKBWIgt/ZvinqQldJm3LecKEs1emkbquO6PCiLVQ==
+
+"7zip-min@^1.4.4":
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/7zip-min/-/7zip-min-1.4.4.tgz#82a50a8d3f0a2d86b4c908433c9ec35627f4138c"
+  integrity sha512-mYB1WW5tcXfZxUN4+2joKk4+6j8jp+mpO2YiMU5z1gNNFbACxI2ADasffsdNPovZSwn/E662ZIH5gRkFPMufmA==
+  dependencies:
+    "7zip-bin" "5.1.1"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.16.7":
   version "7.18.6"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.18.6.tgz#3b25d38c89600baa2dcc219edfa88a74eb2c427a"
@@ -505,6 +517,11 @@
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/@tsconfig/node16/-/node16-1.0.3.tgz#472eaab5f15c1ffdd7f8628bd4c4f753995ec79e"
   integrity sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==
+
+"@types/7zip-min@^1.3.1":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@types/7zip-min/-/7zip-min-1.3.1.tgz#cac3a2e3942828e723e2aae2e2ab5c166134bad9"
+  integrity sha512-n/Buazk02GAKVV7gdahxqFaomergadDjXKUCGlevKDJizaMpzbe9Oae+2BX7lhkTTVTNidhdsEV1dHKDJsChIw==
 
 "@types/body-parser@*":
   version "1.19.2"

@@ -87,3 +87,6 @@ typings/
 
 # Electron-Forge
 out/
+
+# convenience dir for mods during development
+userdata/

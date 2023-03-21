@@ -47,7 +47,8 @@ After AMS2 received a version update via Steam, I need to wait for updated bootf
 
 -   [Mod installation tutorial](https://steamcommunity.com/sharedfiles/filedetails/?id=2825729601) by speedonerd
 -   [AMS2 Bootfiles](https://projectcarsmoddingteam.weebly.com/downloads---automobilista-2.html) by Project Cars Modding Team
--   [PCarsTools](https://github.com/Nenkai/PCarsTools/), a tool for creating bootfiles from an existing AMS2 installatio
+-   [PCarsTools](https://github.com/Nenkai/PCarsTools/), a tool for creating bootfiles from an existing AMS2 installation
+-   [JSGME docs](https://www.tuttovola.org/index.php?action=downloads;sa=downfile&id=1135) (PDF, see section _Command line parameters_, p.17)
 
 # TODO
 
