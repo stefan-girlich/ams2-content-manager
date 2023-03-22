@@ -1,5 +1,5 @@
-import listModArchives from './app/data/listModArchives'
-import extractModArchive from './app/data/loadModArchive'
+import listModArchives from './backend/data/listModArchives'
+import extractModArchive from './backend/data/loadModArchive'
 
 // TODO move to dedicated test file structure, use test runner like Jest
 
