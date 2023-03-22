@@ -26,23 +26,4 @@
  * ```
  */
 
-import './index.css'
-
-declare global {
-    interface Window {
-        electronAPI: {
-            // add your API methods and properties here
-            listMods: () => Promise<any>
-        }
-    }
-}
-
-// console.log('👋 This message is being logged by "renderer.js", included via webpack')
-
-document.querySelector('#list-mods-btn').addEventListener('click', async () => {
-    // TODO this fails
-    const foo = await window.electronAPI.listMods()
-    console.log('foo', foo)
-
-    // console.log('>>>>>>>>>>>>', files)
-})
+import './frontend/render-app'
