@@ -1,24 +1,10 @@
-import _7z from '7zip-min'
 import * as fs from 'fs'
 import * as path from 'path'
-import ModContents from './entity/ModContents'
-
-const TMP_DIR = 'userdata/tmp/' // TODO get OS cache dir
+import ModContents from '../../common/@types/ModContents'
 
 const README_FILE_REGEX = /.*readme.*/i
 const CRD_LINE_REGEX = /^.*\.crd$/gim
-const DRIVELINE_LINES_REGEX = /^RECORD.*$(\r\n|.)*?\r\n/gim
-
-const _extractModArchive = (filePath: string) => {
-    const fileName = path.parse(filePath).name
-    const targetDir = path.join(TMP_DIR, fileName)
-    return new Promise<string>((resolve, reject) => {
-        _7z.unpack(filePath, targetDir, err => {
-            if (err) return reject(err)
-            resolve(targetDir)
-        })
-    })
-}
+const DRIVELINE_LINES_REGEX = /^RECORD.*$(\r\n|.)*?\r\n^\s*$^$/gim
 
 const _parseReadme = async (filePath: string) => {
     const readmeContent = await fs.promises.readFile(filePath, { encoding: 'utf-8' })
@@ -35,7 +21,7 @@ const _parseReadme = async (filePath: string) => {
     }
 }
 
-const _loadModContents = async (extractArchiveDirPath: string) => {
+const loadInstalledMod = async (extractArchiveDirPath: string) => {
     const files = await fs.promises.readdir(extractArchiveDirPath)
 
     // TODO file paths should be absolute
@@ -63,8 +49,11 @@ const _loadModContents = async (extractArchiveDirPath: string) => {
 
     const crdFilePaths = rawCrdFilePaths.map(filePath => path.join(extractArchiveDirPath, filePath))
 
+    const dirName = path.basename(extractArchiveDirPath)
+
     const result: ModContents = {
         path: extractArchiveDirPath,
+        dirName,
         readmeFilePath,
         crdFilePaths,
         contentDirPath,
@@ -74,11 +63,4 @@ const _loadModContents = async (extractArchiveDirPath: string) => {
     return result
 }
 
-// TODO rename, add "meta"
-const loadModArchive = async (filePath: string) => {
-    const targetDir = await _extractModArchive(filePath)
-    console.log('🚀 ~ file: loadModArchive.ts:31 ~ loadModArchive ~ targetDir:', targetDir)
-    const foo = await _loadModContents(targetDir)
-}
-
-export default loadModArchive
+export default loadInstalledMod

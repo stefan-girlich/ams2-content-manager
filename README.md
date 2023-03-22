@@ -52,7 +52,6 @@ After AMS2 received a version update via Steam, I need to wait for updated bootf
 
 # TODO
 
--   electron forge or other
 -   very basic UI
 -   load/extract mod archive files (.7z)
 -   load/extract boot files
