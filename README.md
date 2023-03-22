@@ -43,6 +43,23 @@ After AMS2 received a version update via Steam, I need to wait for updated bootf
 
 [Electron](https://www.electronjs.org/), [React](https://reactjs.org/), [TypeScript](https://www.typescriptlang.org/)
 
+## Terminology
+
+### Mod states
+
+A car mod can be in one of the following states:
+
+-   **error, _red_:** mod data is incomplete or cannot be parsed
+-   **available, _yellow_:** mod is available for installation, but not included in bootfiles yet
+-   **installed, _green_:** mod is included in bootfiles, but may require syncing via JSGME
+
+### Bootfiles states
+
+A single bootfiles version/directory can be in one of the following states:
+
+-   **error, _red_:** data is incomplete, cannot be parsed or is outdated
+-   **installed, _green_:** bootfiles can be used with local AMS2 installation
+
 ## Resources
 
 -   [Mod installation tutorial](https://steamcommunity.com/sharedfiles/filedetails/?id=2825729601) by speedonerd
@@ -52,7 +69,17 @@ After AMS2 received a version update via Steam, I need to wait for updated bootf
 
 # TODO
 
--   very basic UI
--   load/extract mod archive files (.7z)
--   load/extract boot files
 -   parse mod and boot files, e.g. for driveline data from README etc.
+    -   allow partial loading without error
+    -   include bootfiles
+        -   error for multiple bootfiles
+    -   include unsupported
+    -   show state in UI (list and detail)
+        -   list: "traffic light" marker
+        -   detail: info
+-   install to bootfiles
+    -   check if already installed
+    -   install to vehicle.list
+    -   install driveline.rg
+-   load/extract mod archive files (.7z)
+    -   drag-and-drop
