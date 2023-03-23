@@ -7,7 +7,7 @@ import { MODS_DIR } from './config'
 // TODO move to dedicated test file structure, use test runner like Jest
 
 const SUPPORTED_FILE_TYPES = ['7z']
-const USER_DATA_DIR = 'userdata/'
+const USER_DATA_DIR = 'userdata'
 const BOOT_FILES_FILE_PREFIX_REGEX = '__bootfiles_.+\\.7z'
 
 const listFiles = async (directory: string, extensions: string[]): Promise<string[]> => {

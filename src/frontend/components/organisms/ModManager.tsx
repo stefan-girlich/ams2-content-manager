@@ -2,10 +2,17 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import StyleableProps from '../../@types/StyleableProps'
 import useModsList from '../../hooks/useModsList'
-import ModsList from '../molecules/ModsList'
 import ModDetailView from '../molecules/ModDetailView'
+import ModsList from '../molecules/ModsList'
 
 const Root = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+const Toolbar = styled.div``
+
+const MainContent = styled.div`
     display: flex;
     flex-direction: row;
 `
@@ -22,8 +29,13 @@ const ModManager = ({ className }: StyleableProps) => {
 
     return (
         <Root className={className}>
-            {data && <ModsList data={data} selectedIndex={selectedModIndex} onSelect={onSelect} />}
-            {data?.length && <ModDetailView data={data[selectedModIndex]} />}
+            <Toolbar>
+                <button onClick={() => fetch()}>reload mods</button>
+            </Toolbar>
+            <MainContent>
+                {data && <ModsList data={data} selectedIndex={selectedModIndex} onSelect={onSelect} />}
+                {data?.length && <ModDetailView data={data[selectedModIndex]} />}
+            </MainContent>
         </Root>
     )
 }

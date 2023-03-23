@@ -39,7 +39,7 @@ const ModsList = ({ data, selectedIndex, onSelect, className }: Props) => {
             <List>
                 {data.map((mod, index) => (
                     <ListItem key={index} selected={selectedIndex === index} onClick={() => onSelect(index)}>
-                        {mod.dirName}
+                        {mod.name}
                     </ListItem>
                 ))}
             </List>

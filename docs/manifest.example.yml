@@ -1,19 +1,11 @@
 manifest_version: '1.0'
-name: Lamborghini SCV12 # optional for single car, could be pack title
-version: '1.4.5.2'
+name: VRC Auriel 90 GTO
+version: '1.1'
 min_game_version: '1.4.5.2'
-author: 'Robi3381'
+author: 'VRC'
 cars:
-  - manufacturer: Lamborghini
-    model: SCV12
-    game_files_dir: 'Lamborghini SCV12 v1.4.5.2/'
-    vehicle_file: 'vehicles\lamborghini_scv12\lamborghini_scv12.crd'
-    driveline_entries:
-      - |
-RECORD RWD_lamborghini_scv12 l_driveline
-  name "lamborghini_scv12"
-  contents RWD_MODERN_SEQUENTIAL_2_FLEX_v3
-  dl:minhz	3000
-  - manufacturer: Ferrari
-  # ... more cars per pack
-
+    - manufacturer: Auriel
+      model: 90 GTO
+      game_files_dir: 'AMS2 Files\VRC Auriel 90GTO V1.1'
+      vehicle_list_entry: 'vehicles\lamborghini_scv12\lamborghini_scv12.crd'
+      driveline_entries_file: 'driveline_entries.txt'

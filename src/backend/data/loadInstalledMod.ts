@@ -1,10 +1,30 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import ModContents from '../../common/@types/ModContents'
+import loadManifest from './loadManifest'
 
-const README_FILE_REGEX = /.*readme.*/i
+const README_FILE_REGEX = /.*readme.*\.(md|txt)/i
 const CRD_LINE_REGEX = /^.*\.crd$/gim
-const DRIVELINE_LINES_REGEX = /^RECORD.*$(\r\n|.)*?\r\n^\s*$^$/gim
+// const DRIVELINE_LINES_REGEX = /^RECORD.*$(\r\n|.)*?\r\n^\s*$^$/gim
+const DRIVELINE_LINES_REGEX = /^RECORD.*$(\r\n|.)*?\r\n^\s*$/gim
+
+const _findReadmeFile = async (extractArchiveDirPath: string) => {
+    const files = await fs.promises.readdir(extractArchiveDirPath)
+    let readmeFilePath: string = null
+
+    await Promise.all(
+        files.map(async fileName => {
+            const fullPath = path.join(extractArchiveDirPath, fileName)
+            const stat = await fs.promises.lstat(fullPath)
+            if (stat.isFile() && fileName.match(README_FILE_REGEX)) {
+                if (readmeFilePath) throw new Error('found more than one README file')
+                readmeFilePath = fullPath
+            }
+        })
+    )
+
+    return readmeFilePath
+}
 
 const _parseReadme = async (filePath: string) => {
     const readmeContent = await fs.promises.readFile(filePath, { encoding: 'utf-8' })
@@ -21,43 +41,59 @@ const _parseReadme = async (filePath: string) => {
     }
 }
 
-const loadInstalledMod = async (extractArchiveDirPath: string) => {
-    const files = await fs.promises.readdir(extractArchiveDirPath)
+const _parseModFilesWithoutManifest = async (
+    extractArchiveDirPath: string,
+    readmeFilePath: string
+): Promise<ModContents> => {
+    const { crdFilePaths, drivelineEntries } = await _parseReadme(readmeFilePath)
+    const result: ModContents = {
+        name: path.basename(extractArchiveDirPath),
+        path: extractArchiveDirPath,
+        readmeFilePath,
+        vehicleListEntries: crdFilePaths,
+        drivelineEntries,
+        manifest: null,
+    }
 
-    // TODO file paths should be absolute
-    let readmeFilePath: string = null
-    let contentDirPath: string = null
+    return result
+}
 
-    await Promise.all(
-        files.map(async fileName => {
-            const fullPath = path.join(extractArchiveDirPath, fileName)
-            const stat = await fs.promises.lstat(fullPath)
-            if (stat.isFile() && fileName.match(README_FILE_REGEX)) {
-                if (readmeFilePath) throw new Error('found more than one README file')
-                readmeFilePath = fullPath
-            } else if (stat.isDirectory()) {
-                if (contentDirPath) throw new Error('more than one root-level directory found')
-                contentDirPath = fullPath
-            }
+const _parseDrivelineFileContent = (fileContent: string) => {
+    // TODO if last line is non-empty: throw
+    const drivelineEntries = fileContent.match(DRIVELINE_LINES_REGEX)
+    if (!drivelineEntries?.length) throw new Error('no driveline entries found in file content:\n' + fileContent)
+    return drivelineEntries
+}
+
+const loadInstalledMod = async (extractArchiveDirPath: string): Promise<ModContents> => {
+    const readmeFilePath = await _findReadmeFile(extractArchiveDirPath)
+    const manifest = await loadManifest(extractArchiveDirPath)
+    if (!manifest) {
+        console.warn('fallback: parsing mod data from file contents')
+        return _parseModFilesWithoutManifest(extractArchiveDirPath, readmeFilePath)
+    }
+
+    // const fullPath = path.join(extractArchiveDirPath, fileName)
+
+    const vehicleListEntries = manifest.cars.map(car => car.vehicle_list_file)
+
+    const drivelineEntriesByCar = await Promise.all(
+        manifest.cars.map(async car => {
+            const drivelineFileContent = await fs.promises.readFile(car.driveline_entries_file, { encoding: 'utf-8' })
+            const drivelineEntriesForCar = _parseDrivelineFileContent(drivelineFileContent)
+            return drivelineEntriesForCar
         })
     )
 
-    if (!readmeFilePath) throw new Error('did not find README file')
-    if (!contentDirPath) throw new Error('did not find content directory')
-
-    const { crdFilePaths: rawCrdFilePaths, drivelineEntries } = await _parseReadme(readmeFilePath)
-
-    const crdFilePaths = rawCrdFilePaths.map(filePath => path.join(extractArchiveDirPath, filePath))
-
-    const dirName = path.basename(extractArchiveDirPath)
+    const drivelineEntries = drivelineEntriesByCar.flat()
 
     const result: ModContents = {
+        name: manifest.name,
         path: extractArchiveDirPath,
-        dirName,
         readmeFilePath,
-        crdFilePaths,
-        contentDirPath,
+        vehicleListEntries,
         drivelineEntries,
+        manifest,
     }
 
     return result

@@ -1,8 +1,13 @@
+import ModManifest from './ModManifest'
+
 export default interface ModContents {
+    /**
+     * path to the mod's root directory (^= root of mod archive contents)
+     */
     path: string
-    dirName: string
-    readmeFilePath: string
-    crdFilePaths: string[]
+    name: string
+    readmeFilePath: string | null
+    vehicleListEntries: string[]
     drivelineEntries: string[]
-    contentDirPath: string
+    manifest: ModManifest | null
 }
