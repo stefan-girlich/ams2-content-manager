@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import ModContents from '../../../common/@types/ModContents'
 import StyleableProps from '../../@types/StyleableProps'
+import CarModDataView from './CarModDataView'
 
 const Root = styled.div`
     flex: 1;
@@ -27,21 +28,12 @@ const ModDetailView = ({ data, className }: Props) => {
             <h2>README file</h2>
             <span>{data.readmeFilePath}</span>
 
-            <h2>.crd file paths</h2>
-            <ul>
-                {data.vehicleListEntries.map(filePath => (
-                    <li key={filePath}>{filePath}</li>
-                ))}
-            </ul>
-
-            <h2>driveline entries</h2>
-            <ul>
-                {data.drivelineEntries.map((entry, index) => (
-                    <DrivelineEntryListItem key={index}>
-                        <pre>{entry}</pre>
-                    </DrivelineEntryListItem>
-                ))}
-            </ul>
+            {!!data.carData && (
+                <>
+                    <h2>Car data</h2>
+                    <CarModDataView data={data.carData} />
+                </>
+            )}
         </Root>
     )
 }
