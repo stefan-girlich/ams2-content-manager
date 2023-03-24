@@ -6,7 +6,7 @@ import ModManifest, { ModManifestCarEntry } from '../../common/@types/ModManifes
 import isFileReadable from '../util/isFileReadable'
 import joinPaths from '../util/joinPaths'
 
-const MANIFEST_FILENAME = 'manifest.yml'
+export const MANIFEST_FILENAME = 'manifest.yml'
 
 const MANIFEST_SCHEMA = Joi.object<ModManifest>({
     manifest_version: Joi.string().valid('1.0').required(),
@@ -30,15 +30,19 @@ const MANIFEST_SCHEMA = Joi.object<ModManifest>({
         .required(),
 })
 
-const loadManifest = async (extractModRootDir: string): Promise<ModManifest | null> => {
-    const manifestFilePath = path.join(extractModRootDir, MANIFEST_FILENAME)
+export const findManifestFilePath = async (directory: string) => {
+    const manifestFilePath = path.join(directory, MANIFEST_FILENAME)
 
     const isManifestFileReadable = await isFileReadable(manifestFilePath)
     if (!isManifestFileReadable) {
         console.warn('no manifest file found via path: ', manifestFilePath)
         return null
     }
+    return manifestFilePath
+}
 
+const loadManifest = async (extractModRootDir: string): Promise<ModManifest | null> => {
+    const manifestFilePath = await findManifestFilePath(extractModRootDir)
     const manifestFileContent = await fs.promises.readFile(manifestFilePath, { encoding: 'utf-8' })
     const manifestContentUnvalidated = yaml.parse(manifestFileContent)
 
