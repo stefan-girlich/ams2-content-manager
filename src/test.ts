@@ -1,7 +1,7 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import isVehicleListEntryPresent from './backend/data/isVehicleListEntryPresent'
-import listMods from './backend/data/listMods'
+import listModsAndSyncStatus from './backend/data/listMods'
 import joinPaths from './backend/util/joinPaths'
 import { MODS_DIR } from './config'
 
@@ -39,7 +39,7 @@ const main = async () => {
     // )
     // console.log('🚀 ~ file: test.ts:39 ~ main ~ isVehicleListPresent:', isVehicleListPresent)
 
-    const mods = await listMods(MODS_DIR)
+    const mods = await listModsAndSyncStatus(MODS_DIR)
     console.log(mods)
 }
 

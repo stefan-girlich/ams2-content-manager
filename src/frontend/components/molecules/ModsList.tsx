@@ -56,6 +56,8 @@ interface Props extends StyleableProps {
 }
 
 const ModsList = ({ data, selectedIndex, onSelect, className }: Props) => {
+    console.log(data)
+    
     return (
         <Root className={className}>
             <List>

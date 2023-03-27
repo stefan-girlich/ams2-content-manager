@@ -4,6 +4,7 @@ import ModAndSyncStatus, { SyncStatus } from '../../common/@types/ModAndSyncStat
 import ModContents from '../../common/@types/ModContents'
 import areAllTrue from '../util/everyAsync'
 import createUnknownFileContents from './createUnknownFileContents'
+import findBootfiles from './findBootfiles'
 import isDrivelineEntryPresent from './isDrivelineEntryPresent'
 import isVehicleListEntryPresent from './isVehicleListEntryPresent'
 import loadBootfiles from './loadBootfiles'
@@ -11,7 +12,7 @@ import loadInstalledMod from './loadInstalledMod'
 
 const BOOT_FILES_DIR_REGEX = '__bootfiles_.+'
 
-const _mapSyncStatus = async (modContents: ModContents, bootfiles: ModContents | null): ModAndSyncStatus => {
+const _mapSyncStatus = async (modContents: ModContents, bootfiles: ModContents | null): Promise<ModAndSyncStatus> => {
     // TODO optimize: load bootfiles files into memory once
 
     const buildResult = (status: SyncStatus) => ({
@@ -35,13 +36,11 @@ const _mapSyncStatus = async (modContents: ModContents, bootfiles: ModContents |
         drivelineEntries.map(entry => isDrivelineEntryPresent(drivelineFilePath, entry))
     )
 
-    console.log(vehicleListEntries, drivelineEntries, isVehicleListSynced, isDrivelineSynced)
-
     const status: SyncStatus = isVehicleListSynced && isDrivelineSynced ? 'synced' : 'not_synced'
     return buildResult(status)
 }
 
-const listMods = async (modsDirPath: string): Promise<ModAndSyncStatus[]> => {
+export const listMods = async (modsDirPath: string): Promise<ModContents[]> => {
     const files = await fs.promises.readdir(modsDirPath)
 
     const loadedModsAndBootfilesInclHidden = await Promise.all(
@@ -60,20 +59,13 @@ const listMods = async (modsDirPath: string): Promise<ModAndSyncStatus[]> => {
         })
     )
 
-    const loadedMods = loadedModsAndBootfilesInclHidden.filter(item => item !== null)
+    return loadedModsAndBootfilesInclHidden.filter(item => item !== null)
+}
 
-    const bootfilesEntries = loadedMods.filter(mod => mod.type === 'bootfiles')
-    let bootfiles: ModContents | null = null
-    if (bootfilesEntries.length === 0) {
-        console.error(`Expected 1 bootfiles dir, got: 0`)
-    } else if (bootfilesEntries.length > 1) {
-        bootfiles = bootfilesEntries[bootfilesEntries.length - 1]
-        console.warn(`Expected 1 bootfiles dir, got: ${bootfilesEntries.length}. Using latest: ${bootfiles.name}`)
-    } else {
-        bootfiles = bootfilesEntries[0]
-    }
-
+const listModsAndSyncStatus = async (modsDirPath: string): Promise<ModAndSyncStatus[]> => {
+    const loadedMods = await listMods(modsDirPath)
+    const bootfiles = findBootfiles(loadedMods)
     return Promise.all(loadedMods.map(mod => _mapSyncStatus(mod, bootfiles)))
 }
 
-export default listMods
+export default listModsAndSyncStatus

@@ -1,4 +1,5 @@
 import ModAndSyncStatus from '../common/@types/ModAndSyncStatus'
+import ModInstallerOverlay from './components/organisms/ModInstallerOverlay'
 import ModManager from './components/organisms/ModManager'
 
 import './index.css'
@@ -7,8 +8,8 @@ import './index.css'
 declare global {
     interface Window {
         electronAPI: {
-            // add your API methods and properties here
             listMods: () => Promise<ModAndSyncStatus[]>
+            installMod: (modArchiveFilePath: string) => Promise<void>
         }
     }
 }
@@ -27,6 +28,8 @@ const App = () => {
             <h2>Content Manager for AMS2</h2>
 
             <ModManager />
+
+            <ModInstallerOverlay />
         </>
     )
 }

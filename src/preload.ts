@@ -5,4 +5,5 @@ import { contextBridge, ipcRenderer } from 'electron'
 
 contextBridge.exposeInMainWorld('electronAPI', {
     listMods: () => ipcRenderer.invoke('list-mods'),
+    installMod: (modArchiveFilePath: string) => ipcRenderer.invoke('install-mod', modArchiveFilePath),
 })

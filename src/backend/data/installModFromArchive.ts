@@ -2,11 +2,15 @@ import _7z from '7zip-min'
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
-import ModContents from '../../common/@types/ModContents'
-import { MODS_DIR } from '../../config'
+import ModContents, { BootfilesData, CarsData } from '../../common/@types/ModContents'
+import { MODS_DIR, WIN_LINEBREAK } from '../../config'
 import joinPaths from '../util/joinPaths'
+import findBootfiles from './findBootfiles'
 import findReadmeFile from './findReadmeFile'
 import getModConfigDirPath from './getModConfigDir'
+import isVehicleListEntryPresent from './isVehicleListEntryPresent'
+import { listMods } from './listMods'
+import loadInstalledMod from './loadInstalledMod'
 
 const _extractModArchive = async (filePath: string) => {
     const osTmpDir = os.tmpdir()
@@ -38,7 +42,12 @@ const _findSingleDirectoryPath = async (rootDirectory: string) => {
     return joinPaths(rootDirectory, dirs[0])
 }
 
-const _copyModContent = async (extractionDir: string): Promise<void> => {
+interface ModDestinationPaths {
+    gameContents: string
+    resources: string
+}
+
+const _copyModContent = async (extractionDir: string): Promise<ModDestinationPaths> => {
     // TODO add support for manifest provided in archive
     // const manifestSrcPath = await findManifestFilePath(extractionDir)
     // if (manifestSrcPath) {
@@ -68,18 +77,43 @@ const _copyModContent = async (extractionDir: string): Promise<void> => {
                 reject(err)
                 return
             }
-            resolve()
+            resolve({
+                gameContents: gameDirDestPath,
+                resources: modResourcesDir,
+            })
         })
     })
 }
 
+const _insertVehicleListEntries = async (bootfilesData: BootfilesData, carsData: CarsData): Promise<void> => {
+    const { vehicleListFilePath } = bootfilesData
+    const { vehicleListEntries } = carsData
+
+    const missingEntriesOrNull = await Promise.all(
+        vehicleListEntries.map(async entry => {
+            const hasEntry = await isVehicleListEntryPresent(vehicleListFilePath, entry)
+            return hasEntry ? null : entry
+        })
+    )
+    const missingEntries = missingEntriesOrNull.filter(x => x !== null)
+    for (const entry of missingEntries) {
+        const lineForEntry = WIN_LINEBREAK + entry
+        await fs.promises.appendFile(vehicleListFilePath, lineForEntry, 'utf-8')
+    }
+}
+
 // TODO rename "installModFromArchive", rename file
-const installModFromArchive = async (filePath: string): Promise<ModContents> => {
+const installModFromArchive = async (filePath: string): Promise<void> => {
+    // TODO prevent wrongful handling of non-car mods
     const extractionTargetDir = await _extractModArchive(filePath)
 
-    await _copyModContent(extractionTargetDir)
-    // return loadInstalledMod(targetDir)
-    return null
+    const { gameContents: gameContentsDir } = await _copyModContent(extractionTargetDir)
+    const { carData } = await loadInstalledMod(gameContentsDir)
+
+    const allMods = await listMods(MODS_DIR)
+    const { bootfilesData } = findBootfiles(allMods)
+
+    await _insertVehicleListEntries(bootfilesData, carData)
 }
 
 export default installModFromArchive

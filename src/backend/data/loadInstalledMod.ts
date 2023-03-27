@@ -46,13 +46,7 @@ const _parseModFilesWithoutManifest = async (
     return result
 }
 
-const _parseDrivelineFileContent = (fileContent: string) => {
-    // TODO if last line is non-empty: throw
-    const drivelineEntries = fileContent.match(DRIVELINE_LINES_REGEX)
-    if (!drivelineEntries?.length) throw new Error('no driveline entries found in file content:\n' + fileContent)
-    return drivelineEntries
-}
-
+// TODO allow modName as argument, content path can be derived: MODS/<modName>
 const loadInstalledMod = async (modDirPathInModsDir: string): Promise<ModContents> => {
     const modName = path.basename(modDirPathInModsDir)
     const modConfigDir = await getModConfigDirPath(modName)
