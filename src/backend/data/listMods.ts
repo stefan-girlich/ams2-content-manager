@@ -1,22 +1,11 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import ModContents from '../../common/@types/ModContents'
+import createUnknownFileContents from './createUnknownFileContents'
 import loadBootfiles from './loadBootfiles'
 import loadInstalledMod from './loadInstalledMod'
 
 const BOOT_FILES_DIR_REGEX = '__bootfiles_.+'
-
-const createUnknownFileContents = (filePath: string): ModContents => {
-    return {
-        path: filePath,
-        name: path.basename(filePath),
-        type: 'unknown',
-        readmeFilePath: null,
-        manifest: null,
-        carData: null,
-        bootfilesData: null,
-    }
-}
 
 const listMods = async (modsDirPath: string): Promise<ModContents[]> => {
     const files = await fs.promises.readdir(modsDirPath)

@@ -1,7 +1,9 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import ModContents from '../../common/@types/ModContents'
+import createUnknownFileContents from './createUnknownFileContents'
 import findReadmeFile from './findReadmeFile'
+import getModConfigDirPath from './getModConfigDir'
 import loadManifest from './loadManifest'
 
 const CRD_LINE_REGEX = /^.*\.crd$/gim
@@ -23,13 +25,14 @@ const _parseReadme = async (filePath: string) => {
 }
 
 const _parseModFilesWithoutManifest = async (
-    extractArchiveDirPath: string,
+    modDirPathInModsDir: string,
     readmeFilePath: string
 ): Promise<ModContents> => {
+    const modName = path.basename(modDirPathInModsDir)
     const { crdFilePaths, drivelineEntries } = await _parseReadme(readmeFilePath)
     const result: ModContents = {
-        name: path.basename(extractArchiveDirPath),
-        path: extractArchiveDirPath,
+        name: modName,
+        path: modDirPathInModsDir,
         type: 'car_mod',
         readmeFilePath,
         manifest: null,
@@ -50,13 +53,24 @@ const _parseDrivelineFileContent = (fileContent: string) => {
     return drivelineEntries
 }
 
-const loadInstalledMod = async (extractArchiveDirPath: string): Promise<ModContents> => {
-    const readmeFilePath = await findReadmeFile(extractArchiveDirPath)
-    const manifest = await loadManifest(extractArchiveDirPath)
+const loadInstalledMod = async (modDirPathInModsDir: string): Promise<ModContents> => {
+    const modName = path.basename(modDirPathInModsDir)
+    const modConfigDir = await getModConfigDirPath(modName)
+    console.log('🚀 ~ file: loadInstalledMod.ts:59 ~ modConfigDir:', modConfigDir)
+    console.log('🚀 ~ file: loadInstalledMod.ts:62 ~ modDirPathInModsDir:', modDirPathInModsDir)
+    const readmeFilePath = await findReadmeFile(modConfigDir)
+
+    // TODO manifest disabled temporarily
+    const manifest = false && (await loadManifest(modDirPathInModsDir))
+
+    if (!modConfigDir) return createUnknownFileContents(modConfigDir)
+
     if (!manifest) {
         console.warn('fallback: parsing mod data from file contents')
-        return _parseModFilesWithoutManifest(extractArchiveDirPath, readmeFilePath)
+        return _parseModFilesWithoutManifest(modDirPathInModsDir, readmeFilePath)
     }
+
+    throw new Error('TODO manifest disabled for now')
 
     // const fullPath = path.join(extractArchiveDirPath, fileName)
 
@@ -74,7 +88,7 @@ const loadInstalledMod = async (extractArchiveDirPath: string): Promise<ModConte
 
     const result: ModContents = {
         name: manifest.name,
-        path: extractArchiveDirPath,
+        path: modDirPathInModsDir,
         type: 'car_mod',
         readmeFilePath,
         manifest,

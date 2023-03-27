@@ -3,9 +3,10 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 import ModContents from '../../common/@types/ModContents'
-import { MODS_DIR, MOD_RESOURCES_DIR } from '../../config'
+import { MODS_DIR } from '../../config'
 import joinPaths from '../util/joinPaths'
 import findReadmeFile from './findReadmeFile'
+import getModConfigDirPath from './getModConfigDir'
 
 const _extractModArchive = async (filePath: string) => {
     const osTmpDir = os.tmpdir()
@@ -52,7 +53,7 @@ const _copyModContent = async (extractionDir: string): Promise<void> => {
     const readmeSrcPath = await findReadmeFile(extractionDir)
     const readmeFileName = path.basename(readmeSrcPath)
 
-    const modResourcesDir = joinPaths(MOD_RESOURCES_DIR, gameDirName)
+    const modResourcesDir = await getModConfigDirPath(gameDirName)
     await fs.promises.mkdir(modResourcesDir, { recursive: true })
 
     const readmeDestPath = joinPaths(modResourcesDir, readmeFileName)
@@ -73,7 +74,7 @@ const _copyModContent = async (extractionDir: string): Promise<void> => {
 }
 
 // TODO rename "installModFromArchive", rename file
-const installModFromArchive = async (filePath: string, modsDirPath: string): Promise<ModContents> => {
+const installModFromArchive = async (filePath: string): Promise<ModContents> => {
     const extractionTargetDir = await _extractModArchive(filePath)
 
     await _copyModContent(extractionTargetDir)

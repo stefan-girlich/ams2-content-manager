@@ -3,8 +3,6 @@ import * as path from 'path'
 import installModFromArchive from './backend/data/installModFromArchive'
 import joinPaths from './backend/util/joinPaths'
 
-import { MODS_DIR } from './config'
-
 // TODO move to dedicated test file structure, use test runner like Jest
 
 const SUPPORTED_ARCHIVE_FILE_TYPES = ['7z']
@@ -34,7 +32,7 @@ const main = async () => {
     // const filePaths = await listModArchives()
 
     const testeePath = joinPaths('userdata', 'archives', 'Lamborghini SCV12 v1.4.5.2.7z')
-    await installModFromArchive(testeePath, MODS_DIR)
+    await installModFromArchive(testeePath)
 }
 
 main()
