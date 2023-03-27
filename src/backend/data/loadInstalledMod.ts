@@ -56,8 +56,6 @@ const _parseDrivelineFileContent = (fileContent: string) => {
 const loadInstalledMod = async (modDirPathInModsDir: string): Promise<ModContents> => {
     const modName = path.basename(modDirPathInModsDir)
     const modConfigDir = await getModConfigDirPath(modName)
-    console.log('🚀 ~ file: loadInstalledMod.ts:59 ~ modConfigDir:', modConfigDir)
-    console.log('🚀 ~ file: loadInstalledMod.ts:62 ~ modDirPathInModsDir:', modDirPathInModsDir)
     const readmeFilePath = await findReadmeFile(modConfigDir)
 
     // TODO manifest disabled temporarily
@@ -74,32 +72,32 @@ const loadInstalledMod = async (modDirPathInModsDir: string): Promise<ModContent
 
     // const fullPath = path.join(extractArchiveDirPath, fileName)
 
-    const vehicleListEntries = manifest.cars.map(car => car.vehicle_list_file)
+    // const vehicleListEntries = manifest.cars.map(car => car.vehicle_list_file)
 
-    const drivelineEntriesByCar = await Promise.all(
-        manifest.cars.map(async car => {
-            const drivelineFileContent = await fs.promises.readFile(car.driveline_entries_file, { encoding: 'utf-8' })
-            const drivelineEntriesForCar = _parseDrivelineFileContent(drivelineFileContent)
-            return drivelineEntriesForCar
-        })
-    )
+    // const drivelineEntriesByCar = await Promise.all(
+    //     manifest.cars.map(async car => {
+    //         const drivelineFileContent = await fs.promises.readFile(car.driveline_entries_file, { encoding: 'utf-8' })
+    //         const drivelineEntriesForCar = _parseDrivelineFileContent(drivelineFileContent)
+    //         return drivelineEntriesForCar
+    //     })
+    // )
 
-    const drivelineEntries = drivelineEntriesByCar.flat()
+    // const drivelineEntries = drivelineEntriesByCar.flat()
 
-    const result: ModContents = {
-        name: manifest.name,
-        path: modDirPathInModsDir,
-        type: 'car_mod',
-        readmeFilePath,
-        manifest,
-        carData: {
-            vehicleListEntries,
-            drivelineEntries,
-        },
-        bootfilesData: null,
-    }
+    // const result: ModContents = {
+    //     name: manifest.name,
+    //     path: modDirPathInModsDir,
+    //     type: 'car_mod',
+    //     readmeFilePath,
+    //     manifest,
+    //     carData: {
+    //         vehicleListEntries,
+    //         drivelineEntries,
+    //     },
+    //     bootfilesData: null,
+    // }
 
-    return result
+    // return result
 }
 
 export default loadInstalledMod

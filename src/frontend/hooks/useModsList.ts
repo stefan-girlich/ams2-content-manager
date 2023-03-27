@@ -1,16 +1,16 @@
 import { useState } from 'react'
-import ModContents from '../../common/@types/ModContents'
+import ModAndSyncStatus from '../../common/@types/ModAndSyncStatus'
 import OperationStatus from '../@types/OperationStatus'
 
 interface Result {
     fetch(): void
-    data: ModContents[]
+    data: ModAndSyncStatus[]
     status: OperationStatus
 }
 
 const useModsList = (): Result => {
     const [status, setStatus] = useState<OperationStatus>('idle')
-    const [data, setData] = useState<ModContents[]>(null)
+    const [data, setData] = useState<ModAndSyncStatus[]>(null)
     const fetch = async () => {
         try {
             setStatus('pending')

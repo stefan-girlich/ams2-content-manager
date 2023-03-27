@@ -1,7 +1,9 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import installModFromArchive from './backend/data/installModFromArchive'
+import isVehicleListEntryPresent from './backend/data/isVehicleListEntryPresent'
+import listMods from './backend/data/listMods'
 import joinPaths from './backend/util/joinPaths'
+import { MODS_DIR } from './config'
 
 // TODO move to dedicated test file structure, use test runner like Jest
 
@@ -28,11 +30,17 @@ const listModArchives = async () => {
 
 const main = async () => {
     console.log('main()')
+    // const testeePath = joinPaths('userdata', 'archives', 'Lamborghini SCV12 v1.4.5.2.7z')
+    // await installModFromArchive(testeePath)
 
-    // const filePaths = await listModArchives()
+    // const isVehicleListPresent = await isVehicleListEntryPresent(
+    //     joinPaths(MODS_DIR, '__bootfiles_1.4.6.1/vehicles/vehiclelist.lst'),
+    //     'vehicles\\CART_Reynard_2KI\\CART_Reynard_2KI_Honda_SW.crd'
+    // )
+    // console.log('🚀 ~ file: test.ts:39 ~ main ~ isVehicleListPresent:', isVehicleListPresent)
 
-    const testeePath = joinPaths('userdata', 'archives', 'Lamborghini SCV12 v1.4.5.2.7z')
-    await installModFromArchive(testeePath)
+    const mods = await listMods(MODS_DIR)
+    console.log(mods)
 }
 
 main()

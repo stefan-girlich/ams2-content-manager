@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import ModContents from '../../../common/@types/ModContents'
+import ModAndSyncStatus from '../../../common/@types/ModAndSyncStatus'
 import StyleableProps from '../../@types/StyleableProps'
 import CarModDataView from './CarModDataView'
 
@@ -15,23 +15,24 @@ const DrivelineEntryListItem = styled.li`
 `
 
 interface Props extends StyleableProps {
-    data: ModContents
+    data: ModAndSyncStatus
 }
 
 const ModDetailView = ({ data, className }: Props) => {
+    const { contents } = data
     return (
         <Root className={className}>
             <h1>{data.name}</h1>
 
-            {!data.manifest && <b>no manifest.yml found - values are parsed from README</b>}
+            {!contents.manifest && <b>no manifest.yml found - values are parsed from README</b>}
 
             <h2>README file</h2>
-            <span>{data.readmeFilePath}</span>
+            <span>{contents.readmeFilePath}</span>
 
-            {!!data.carData && (
+            {!!contents.carData && (
                 <>
                     <h2>Car data</h2>
-                    <CarModDataView data={data.carData} />
+                    <CarModDataView data={contents.carData} />
                 </>
             )}
         </Root>

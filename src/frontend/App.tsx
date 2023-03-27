@@ -1,4 +1,4 @@
-import ModContents from '../common/@types/ModContents'
+import ModAndSyncStatus from '../common/@types/ModAndSyncStatus'
 import ModManager from './components/organisms/ModManager'
 
 import './index.css'
@@ -8,7 +8,7 @@ declare global {
     interface Window {
         electronAPI: {
             // add your API methods and properties here
-            listMods: () => Promise<ModContents[]>
+            listMods: () => Promise<ModAndSyncStatus[]>
         }
     }
 }

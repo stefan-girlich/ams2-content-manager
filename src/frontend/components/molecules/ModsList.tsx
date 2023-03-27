@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components'
-import ModContents from '../../../common/@types/ModContents'
+import ModAndSyncStatus, { SyncStatus } from '../../../common/@types/ModAndSyncStatus'
 import StyleableProps from '../../@types/StyleableProps'
 
 const Root = styled.div`
@@ -10,6 +10,9 @@ const Root = styled.div`
 const List = styled.ul``
 
 const ListItem = styled.li<{ selected: boolean }>`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     padding: 8px;
     border: 1px solid transparent;
     margin-bottom: 8px;
@@ -27,8 +30,27 @@ const ListItem = styled.li<{ selected: boolean }>`
     }}
 `
 
+const SyncStatusMarker = styled.div<{ status: SyncStatus }>`
+    border-radius: 100%;
+    width: 12px;
+    height: 12px;
+    margin-left: 16px;
+    background: lightgray;
+
+    ${({ status }) => {
+        if (status === 'not_synced' || status === 'missing_bootfiles')
+            return css`
+                background: red;
+            `
+        if (status === 'synced')
+            return css`
+                background: green;
+            `
+    }}
+`
+
 interface Props extends StyleableProps {
-    data: ModContents[]
+    data: ModAndSyncStatus[]
     selectedIndex: number
     onSelect(index: number): void
 }
@@ -40,6 +62,7 @@ const ModsList = ({ data, selectedIndex, onSelect, className }: Props) => {
                 {data.map((mod, index) => (
                     <ListItem key={index} selected={selectedIndex === index} onClick={() => onSelect(index)}>
                         {mod.name}
+                        <SyncStatusMarker status={mod.status} />
                     </ListItem>
                 ))}
             </List>
