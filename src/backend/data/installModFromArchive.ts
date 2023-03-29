@@ -8,7 +8,7 @@ import joinPaths from '../util/joinPaths'
 import findBootfiles from './findBootfiles'
 import findReadmeFile from './findReadmeFile'
 import getModConfigDirPath from './getModConfigDir'
-import isVehicleListEntryPresent from './isVehicleListEntryPresent'
+import isVehicleListEntryPresent from '../vehiclelist/isVehicleListEntryPresent'
 import { listMods } from './listMods'
 import loadInstalledMod from './loadInstalledMod'
 

@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import isVehicleListEntryPresent from './backend/data/isVehicleListEntryPresent'
+import isVehicleListEntryPresent from './backend/vehiclelist/isVehicleListEntryPresent'
 import listModsAndSyncStatus from './backend/data/listMods'
 import joinPaths from './backend/util/joinPaths'
 import { MODS_DIR } from './config'
