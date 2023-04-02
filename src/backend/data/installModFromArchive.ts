@@ -2,13 +2,14 @@ import _7z from '7zip-min'
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
-import ModContents, { BootfilesData, CarsData } from '../../common/@types/ModContents'
+import { BootfilesData, CarsData } from '../../common/@types/ModContents'
 import { MODS_DIR, WIN_LINEBREAK } from '../../config'
 import joinPaths from '../util/joinPaths'
+import addVehicleListEntry from '../vehiclelist/addVehicleListEntry'
+import isVehicleListEntryPresent from '../vehiclelist/isVehicleListEntryPresent'
 import findBootfiles from './findBootfiles'
 import findReadmeFile from './findReadmeFile'
 import getModConfigDirPath from './getModConfigDir'
-import isVehicleListEntryPresent from '../vehiclelist/isVehicleListEntryPresent'
 import { listMods } from './listMods'
 import loadInstalledMod from './loadInstalledMod'
 
@@ -97,8 +98,7 @@ const _insertVehicleListEntries = async (bootfilesData: BootfilesData, carsData:
     )
     const missingEntries = missingEntriesOrNull.filter(x => x !== null)
     for (const entry of missingEntries) {
-        const lineForEntry = WIN_LINEBREAK + entry
-        await fs.promises.appendFile(vehicleListFilePath, lineForEntry, 'utf-8')
+        addVehicleListEntry(vehicleListFilePath, entry)
     }
 }
 
