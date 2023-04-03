@@ -1,7 +1,7 @@
 import listModsAndSyncStatus from './backend/data/listMods'
 import loadInstalledMod from './backend/data/loadInstalledMod'
 import addDrivelineEntry from './backend/driveline/addDrivelineEntry'
-import findDrivelineEntryLocation from './backend/driveline/findDrivelineEntryLocation'
+import removeExistingDrivelineEntries from './backend/driveline/removeExistingDrivelineEntries'
 import joinPaths from './backend/util/joinPaths'
 import { MODS_DIR } from './config'
 
@@ -23,7 +23,8 @@ const main = async () => {
 
     // ==========================  test driveline file ops  ==========================
 
-    const modDirPath = joinPaths('userdata', 'resources', 'Lamborghini SCV12 v1.4.5.2')
+    // const modDirPath = joinPaths('userdata', 'resources', 'Lamborghini SCV12 v1.4.5.2')
+    const modDirPath = joinPaths('userdata', 'resources', 'Ferrari_FXX-K v1.4.5')
     const modContents = await loadInstalledMod(modDirPath)
 
     const drivelineFilePath = joinPaths(
@@ -36,11 +37,11 @@ const main = async () => {
         'driveline.rg'
     )
 
+    await removeExistingDrivelineEntries(drivelineFilePath, modContents.carData.id)
+
     for (const entry of modContents.carData.drivelineEntries) {
         addDrivelineEntry(drivelineFilePath, entry, modContents.carData.id)
     }
-
-    // findDrivelineEntryLocation(drivelineFilePath , )
 }
 
 main()

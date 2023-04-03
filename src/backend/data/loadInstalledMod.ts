@@ -8,6 +8,7 @@ import loadManifest from './loadManifest'
 
 const CRD_LINE_REGEX = /^.*\.crd$/gim
 const DRIVELINE_LINES_REGEX = /^RECORD.*$(\r\n|.)*?\r\n^\s*$/gim
+export const DRIVELINE_ENTRY_REGEX = new RegExp(DRIVELINE_LINES_REGEX.source, 'm') // TODO move them all to a single location
 const CAR_ID_IN_DRIVE_ENTRY_REGEX = /^\s*name\s+"(.+)"\s*$/im
 
 const _parseReadme = async (filePath: string) => {
