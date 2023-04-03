@@ -8,6 +8,7 @@ import loadManifest from './loadManifest'
 
 const CRD_LINE_REGEX = /^.*\.crd$/gim
 const DRIVELINE_LINES_REGEX = /^RECORD.*$(\r\n|.)*?\r\n^\s*$/gim
+const CAR_ID_IN_DRIVE_ENTRY_REGEX = /^\s*name\s+"(.+)"\s*$/im
 
 const _parseReadme = async (filePath: string) => {
     const readmeContent = await fs.promises.readFile(filePath, { encoding: 'utf-8' })
@@ -18,7 +19,19 @@ const _parseReadme = async (filePath: string) => {
     const drivelineEntries = readmeContent.match(DRIVELINE_LINES_REGEX)
     if (!drivelineEntries) throw new Error(`no driveline entries found in file: ${filePath}`)
 
+    let carId: string | null = null
+    for (const entry of drivelineEntries) {
+        const carIdMatch = entry.match(CAR_ID_IN_DRIVE_ENTRY_REGEX)
+        if (!carIdMatch) continue
+
+        const newCarId = carIdMatch[1]
+        if (carId && carId !== newCarId)
+            throw new Error(`found more than one car ID: ${carId}, ${newCarId}. not supported yet.`)
+        carId = newCarId
+    }
+
     return {
+        id: carId,
         crdFilePaths,
         drivelineEntries,
     }
@@ -29,7 +42,7 @@ const _parseModFilesWithoutManifest = async (
     readmeFilePath: string
 ): Promise<ModContents> => {
     const modName = path.basename(modDirPathInModsDir)
-    const { crdFilePaths, drivelineEntries } = await _parseReadme(readmeFilePath)
+    const { id, crdFilePaths, drivelineEntries } = await _parseReadme(readmeFilePath)
     const result: ModContents = {
         name: modName,
         path: modDirPathInModsDir,
@@ -37,6 +50,7 @@ const _parseModFilesWithoutManifest = async (
         readmeFilePath,
         manifest: null,
         carData: {
+            id,
             vehicleListEntries: crdFilePaths,
             drivelineEntries,
         },

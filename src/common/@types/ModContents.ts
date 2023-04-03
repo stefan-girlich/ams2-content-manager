@@ -6,6 +6,7 @@ export type ContentType = 'car_mod' | 'bootfiles' | 'unknown'
  * Configuration data for all cars in a mod.
  */
 export interface CarsData {
+    id: string
     vehicleListEntries: string[]
     drivelineEntries: string[]
 }
