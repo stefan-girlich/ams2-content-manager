@@ -12,12 +12,6 @@ const main = async () => {
     // const testeePath = joinPaths('userdata', 'archives', 'Lamborghini SCV12 v1.4.5.2.7z')
     // await installModFromArchive(testeePath)
 
-    // const isVehicleListPresent = await isVehicleListEntryPresent(
-    //     joinPaths(MODS_DIR, '__bootfiles_1.4.6.1/vehicles/vehiclelist.lst'),
-    //     'vehicles\\CART_Reynard_2KI\\CART_Reynard_2KI_Honda_SW.crd'
-    // )
-    // console.log('🚀 ~ file: test.ts:39 ~ main ~ isVehicleListPresent:', isVehicleListPresent)
-
     // const mods = await listModsAndSyncStatus(MODS_DIR)
     // console.log(mods)
 

@@ -4,7 +4,8 @@ version: '1.1'
 min_game_version: '1.4.5.2'
 author: 'VRC'
 cars:
-    - manufacturer: Auriel
+    - id: vrc_auriel_90_gto
+      manufacturer: Auriel
       model: 90 GTO
       game_files_dir: 'AMS2 Files\VRC Auriel 90GTO V1.1'
       vehicle_list_entry: 'vehicles\lamborghini_scv12\lamborghini_scv12.crd'
