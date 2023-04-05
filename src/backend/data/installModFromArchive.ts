@@ -3,7 +3,9 @@ import fs from 'fs'
 import os from 'os'
 import path from 'path'
 import { BootfilesData, CarsData } from '../../common/@types/ModContents'
-import { MODS_DIR, WIN_LINEBREAK } from '../../config'
+import { MODS_DIR } from '../../config'
+import addDrivelineEntry from '../driveline/addDrivelineEntry'
+import isDrivelineEntryPresent from '../driveline/isDrivelineEntryPresent'
 import joinPaths from '../util/joinPaths'
 import addVehicleListEntry from '../vehiclelist/addVehicleListEntry'
 import isVehicleListEntryPresent from '../vehiclelist/isVehicleListEntryPresent'
@@ -98,7 +100,24 @@ const _insertVehicleListEntries = async (bootfilesData: BootfilesData, carsData:
     )
     const missingEntries = missingEntriesOrNull.filter(x => x !== null)
     for (const entry of missingEntries) {
-        addVehicleListEntry(vehicleListFilePath, entry)
+        await addVehicleListEntry(vehicleListFilePath, entry)
+    }
+}
+
+const _insertDrivelineEntries = async (bootfilesData: BootfilesData, carsData: CarsData): Promise<void> => {
+    const { drivelineFilePath } = bootfilesData
+    const { drivelineEntries } = carsData
+
+    const missingEntriesOrNull = await Promise.all(
+        drivelineEntries.map(async entry => {
+            const hasEntry = await isDrivelineEntryPresent(drivelineFilePath, entry)
+            return hasEntry ? null : entry
+        })
+    )
+
+    const missingEntries = missingEntriesOrNull.filter(x => x !== null)
+    for (const entry of missingEntries) {
+        await addDrivelineEntry(drivelineFilePath, entry, carsData.id)
     }
 }
 
@@ -114,6 +133,7 @@ const installModFromArchive = async (filePath: string): Promise<void> => {
     const { bootfilesData } = findBootfiles(allMods)
 
     await _insertVehicleListEntries(bootfilesData, carData)
+    await _insertDrivelineEntries(bootfilesData, carData)
 }
 
 export default installModFromArchive
