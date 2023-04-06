@@ -1,4 +1,6 @@
+import styled from 'styled-components'
 import ModAndSyncStatus from '../common/@types/ModAndSyncStatus'
+import Header from './components/organisms/Header'
 import ModManager from './components/organisms/ModManager'
 
 import './index.css'
@@ -13,21 +15,18 @@ declare global {
     }
 }
 
-// document.querySelector('#list-mods-btn').addEventListener('click', async () => {
-//     // TODO this fails
-//     const foo = await window.electronAPI.listMods()
-//     console.log('foo', foo)
-
-//     // console.log('>>>>>>>>>>>>', files)
-// })
+const Root = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+`
 
 const App = () => {
     return (
-        <>
-            <h2>Content Manager for AMS2</h2>
-
+        <Root>
+            <Header />
             <ModManager />
-        </>
+        </Root>
     )
 }
 

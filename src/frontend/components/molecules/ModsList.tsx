@@ -49,15 +49,16 @@ const SyncStatusMarker = styled.div<{ status: SyncStatus }>`
     }}
 `
 
+const Toolbar = styled.div``
+
 interface Props extends StyleableProps {
     data: ModAndSyncStatus[]
     selectedIndex: number
     onSelect(index: number): void
+    onRequestReload(): void
 }
 
-const ModsList = ({ data, selectedIndex, onSelect, className }: Props) => {
-    console.log(data)
-    
+const ModsList = ({ data, selectedIndex, onSelect, onRequestReload, className }: Props) => {
     return (
         <Root className={className}>
             <List>
@@ -68,6 +69,9 @@ const ModsList = ({ data, selectedIndex, onSelect, className }: Props) => {
                     </ListItem>
                 ))}
             </List>
+            <Toolbar>
+                <button onClick={() => onRequestReload()}>reload mods</button>
+            </Toolbar>
         </Root>
     )
 }

@@ -1,11 +1,20 @@
 * {
     box-sizing: border-box;
+    cursor: default;
+    /* user-select: none; */
 }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 
+html,
+body,
+#app {
+    height: 100vh;
+}
+
+body,
 ol,
 ul,
 li {
