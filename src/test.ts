@@ -1,6 +1,7 @@
 import listModsAndSyncStatus from './backend/data/listMods'
 import loadInstalledMod from './backend/data/loadInstalledMod'
 import addDrivelineEntry from './backend/driveline/addDrivelineEntry'
+import isDrivelineEntryPresent from './backend/driveline/isDrivelineEntryPresent'
 import removeExistingDrivelineEntries from './backend/driveline/removeExistingDrivelineEntries'
 import joinPaths from './backend/util/joinPaths'
 import { MODS_DIR } from './config'
@@ -31,11 +32,18 @@ const main = async () => {
         'driveline.rg'
     )
 
-    await removeExistingDrivelineEntries(drivelineFilePath, modContents.carData.id)
+    // await removeExistingDrivelineEntries(drivelineFilePath, modContents.carData.id)
 
-    for (const entry of modContents.carData.drivelineEntries) {
-        addDrivelineEntry(drivelineFilePath, entry, modContents.carData.id)
-    }
+    // for (const entry of modContents.carData.drivelineEntries) {
+    //     addDrivelineEntry(drivelineFilePath, entry, modContents.carData.id)
+    // }
+
+    const entry = modContents.carData.drivelineEntries
+    
+
+    const isIt = await isDrivelineEntryPresent(drivelineFilePath, entry[0])
+    console.log(isIt)
+    
 }
 
 main()

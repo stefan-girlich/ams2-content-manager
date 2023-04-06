@@ -4,6 +4,7 @@ import StyleableProps from '../../@types/StyleableProps'
 import useModsList from '../../hooks/useModsList'
 import ModDetailView from '../molecules/ModDetailView'
 import ModsList from '../molecules/ModsList'
+import ModInstallerOverlay from './ModInstallerOverlay'
 
 const Root = styled.div`
     display: flex;
@@ -25,6 +26,8 @@ const ModManager = ({ className }: StyleableProps) => {
         fetch()
     }, [])
 
+    const onInstallSuccess = () => fetch()
+
     const onSelect = (index: number) => setSelectedModIndex(index)
 
     return (
@@ -36,6 +39,8 @@ const ModManager = ({ className }: StyleableProps) => {
                 {data && <ModsList data={data} selectedIndex={selectedModIndex} onSelect={onSelect} />}
                 {data?.length && <ModDetailView data={data[selectedModIndex]} />}
             </MainContent>
+
+            <ModInstallerOverlay onInstallSuccess={onInstallSuccess} />
         </Root>
     )
 }

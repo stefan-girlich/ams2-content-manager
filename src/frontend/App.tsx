@@ -1,5 +1,4 @@
 import ModAndSyncStatus from '../common/@types/ModAndSyncStatus'
-import ModInstallerOverlay from './components/organisms/ModInstallerOverlay'
 import ModManager from './components/organisms/ModManager'
 
 import './index.css'
@@ -28,8 +27,6 @@ const App = () => {
             <h2>Content Manager for AMS2</h2>
 
             <ModManager />
-
-            <ModInstallerOverlay />
         </>
     )
 }

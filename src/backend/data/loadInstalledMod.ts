@@ -17,8 +17,10 @@ const _parseReadme = async (filePath: string) => {
     const crdFilePaths = readmeContent.match(CRD_LINE_REGEX)
     if (!crdFilePaths) throw new Error(`no .crd file paths found in file: ${filePath}`)
 
-    const drivelineEntries = readmeContent.match(DRIVELINE_LINES_REGEX)
-    if (!drivelineEntries) throw new Error(`no driveline entries found in file: ${filePath}`)
+    const drivelineEntriesWithTrailingSpace = readmeContent.match(DRIVELINE_LINES_REGEX)
+    if (!drivelineEntriesWithTrailingSpace) throw new Error(`no driveline entries found in file: ${filePath}`)
+
+    const drivelineEntries = drivelineEntriesWithTrailingSpace.map(entry => entry.trim())
 
     let carId: string | null = null
     for (const entry of drivelineEntries) {

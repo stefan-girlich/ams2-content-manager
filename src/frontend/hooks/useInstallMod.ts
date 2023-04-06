@@ -3,6 +3,7 @@ import OperationStatus from '../@types/OperationStatus'
 
 interface Result {
     installMod(modArchiveFilePath: string): void
+    reset(): void
     status: OperationStatus
 }
 
@@ -19,8 +20,11 @@ const useInstallMod = (): Result => {
         }
     }
 
+    const reset = () => setStatus('idle')
+
     return {
         installMod,
+        reset,
         status,
     }
 }

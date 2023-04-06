@@ -2,6 +2,7 @@ import useModFileDragAndDrop from '../../../frontend/hooks/useModFileDragAndDrop
 import styled from 'styled-components'
 import StyleableProps from '../../../frontend/@types/StyleableProps'
 import useInstallMod from '../../../frontend/hooks/useInstallMod'
+import { useEffect } from 'react'
 
 const Root = styled.div`
     position: fixed;
@@ -18,11 +19,22 @@ const Modal = styled.div`
     background: white;
 `
 
-const ModInstallerOverlay = ({ className }: StyleableProps) => {
+interface Props extends StyleableProps {
+    onInstallSuccess(): void
+}
+
+const ModInstallerOverlay = ({ onInstallSuccess, className }: Props) => {
     const { pendingFile, isDragging, clear } = useModFileDragAndDrop()
-    const { installMod, status } = useInstallMod()
+    const { installMod, status, reset } = useInstallMod()
 
     const showModal = pendingFile || isDragging
+
+    useEffect(() => {
+        if (!pendingFile && status === 'success') {
+            reset()
+            onInstallSuccess()
+        }
+    }, [pendingFile, status, reset, onInstallSuccess])
     if (!showModal) return null
 
     const onConfirmClick = () => {
