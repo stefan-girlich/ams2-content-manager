@@ -1,55 +1,69 @@
 import styled, { css } from 'styled-components'
-import ModAndSyncStatus, { SyncStatus } from '../../../common/@types/ModAndSyncStatus'
+import ModAndSyncStatus from '../../../common/@types/ModAndSyncStatus'
 import StyleableProps from '../../@types/StyleableProps'
+import colors from '../../config/colors'
+import SyncStatusMarker from './SyncStatusMarker'
+import Button from '../atoms/Button'
+import { useMemo } from 'react'
 
 const Root = styled.div`
-    width: 400px;
-    margin-right: 32px;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin-right: 48px;
 `
 
-const List = styled.ul``
+const ListSectionTitle = styled.div`
+    color: ${colors.list.sectionTitle};
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 200;
+    letter-spacing: 0.1rem;
+    margin-left: 20px;
+    margin-bottom: 16px;
+`
+
+const List = styled.ul`
+    margin-bottom: 72px;
+`
 
 const ListItem = styled.li<{ selected: boolean }>`
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 8px;
-    border: 1px solid transparent;
+    justify-content: space-between;
+    padding: 8px 16px;
     margin-bottom: 8px;
+    border-left: 4px solid transparent;
+    color: ${colors.list.itemText.idle};
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    font-weight: 200;
+    letter-spacing: 0.1rem;
     cursor: pointer;
 
+    > * {
+        cursor: pointer;
+    }
+
     :hover {
-        border: 1px solid gray;
+        color: ${colors.list.itemText.active};
     }
 
     ${({ selected }) => {
         if (selected)
             return css`
-                border: 1px solid black;
+                border-color: ${colors.list.itemBorder.active};
+                color: ${colors.list.itemText.active};
             `
     }}
 `
 
-const SyncStatusMarker = styled.div<{ status: SyncStatus }>`
-    border-radius: 100%;
-    width: 12px;
-    height: 12px;
-    margin-left: 16px;
-    background: lightgray;
+const ModName = styled.div``
 
-    ${({ status }) => {
-        if (status === 'not_synced' || status === 'missing_bootfiles')
-            return css`
-                background: red;
-            `
-        if (status === 'synced')
-            return css`
-                background: green;
-            `
-    }}
+const Toolbar = styled.div`
+    margin-top: auto;
 `
-
-const Toolbar = styled.div``
 
 interface Props extends StyleableProps {
     data: ModAndSyncStatus[]
@@ -59,18 +73,39 @@ interface Props extends StyleableProps {
 }
 
 const ModsList = ({ data, selectedIndex, onSelect, onRequestReload, className }: Props) => {
+    const modsByCategory = useMemo(() => {
+        return {
+            car: data.filter(x => !!x.contents.carData),
+            bootfiles: data.filter(x => !!x.contents.bootfilesData),
+        }
+    }, [data])
+
     return (
         <Root className={className}>
+            <ListSectionTitle>Cars</ListSectionTitle>
             <List>
-                {data.map((mod, index) => (
+                {modsByCategory.car.map((mod, index) => (
                     <ListItem key={index} selected={selectedIndex === index} onClick={() => onSelect(index)}>
-                        {mod.name}
+                        <ModName>{mod.name}</ModName>
+                        <SyncStatusMarker status={mod.status} />
+                    </ListItem>
+                ))}
+            </List>
+            <ListSectionTitle>Bootfiles</ListSectionTitle>
+            <List>
+                {modsByCategory.bootfiles.map((mod, index) => (
+                    <ListItem
+                        key={index}
+                        selected={selectedIndex === index + modsByCategory.car.length}
+                        onClick={() => onSelect(index + modsByCategory.car.length)}
+                    >
+                        <ModName>{mod.name}</ModName>
                         <SyncStatusMarker status={mod.status} />
                     </ListItem>
                 ))}
             </List>
             <Toolbar>
-                <button onClick={() => onRequestReload()}>reload mods</button>
+                <Button label="reload mods" onClick={() => onRequestReload()} />
             </Toolbar>
         </Root>
     )

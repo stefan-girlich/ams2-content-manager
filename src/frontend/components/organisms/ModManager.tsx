@@ -19,6 +19,7 @@ const MainContent = styled.div`
     flex-direction: row;
     background: ${colors.common.background};
     color: ${colors.common.text};
+    padding: 48px;
 `
 
 const ModManager = ({ className }: StyleableProps) => {

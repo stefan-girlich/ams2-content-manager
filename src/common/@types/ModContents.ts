@@ -29,7 +29,12 @@ export default interface ModContents {
     path: string
     name: string
     type: ContentType
+    version: string // TODO initialize in BE if manifest given
     readmeFilePath: string | null
+    /**
+     * original parsed manifest data or null
+     * if manifest file not found
+     */
     manifest: ModManifest | null
     carData: CarsData | null
     bootfilesData: BootfilesData | null

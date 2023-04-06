@@ -4,7 +4,8 @@
     /* user-select: none; */
 }
 
-body {
+body,
+button {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 

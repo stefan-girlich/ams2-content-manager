@@ -14,7 +14,7 @@ const Logo = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 16px;
+    padding: 16px 0 16px 48px;
     color: ${colors.common.text};
     font-size: 1.8rem;
     text-transform: uppercase;
@@ -42,12 +42,11 @@ const Menu = styled.ul`
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 8px;
 `
 
 const MenuItem = styled.li<{ active?: boolean }>`
     padding: 16px;
-    color: ${colors.menu.text};
+    color: ${colors.menu.text.idle};
     font-weight: 200;
     text-transform: uppercase;
     letter-spacing: 0.05rem;
@@ -55,16 +54,16 @@ const MenuItem = styled.li<{ active?: boolean }>`
     cursor: pointer;
 
     :hover {
-        color: ${colors.menu.textHover};
+        color: ${colors.menu.text.hover};
     }
 
     ${({ active }) =>
         active &&
         css`
             font-weight: 400;
-            color: ${colors.menu.textActive};
+            color: ${colors.menu.text.active};
             :hover {
-                color: ${colors.menu.textActive};
+                color: ${colors.menu.text.hover};
             }
         `}
 `
@@ -80,6 +79,7 @@ const Header = ({ className }: StyleableProps) => {
             </Logo>
             <Menu>
                 <MenuItem active>Mods</MenuItem>
+                <MenuItem>Tools</MenuItem>
                 <MenuItem>Settings</MenuItem>
             </Menu>
         </Root>

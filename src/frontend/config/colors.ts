@@ -11,10 +11,37 @@ const palette = {
 
 const colors = {
     menu: {
-        text: palette.LIGHT_GRAY,
-        textActive: palette.AUREOLIN_YELLOW,
-        textHover: palette.WHITE,
+        text: {
+            idle: palette.LIGHT_GRAY,
+            active: palette.AUREOLIN_YELLOW,
+            hover: palette.WHITE,
+        },
         background: palette.JET,
+    },
+    list: {
+        itemBorder: {
+            active: palette.AUREOLIN_YELLOW,
+        },
+        itemText: {
+            idle: palette.LIGHT_GRAY,
+            active: palette.WHITE,
+        },
+        sectionTitle: palette.JONQUIL_ORANGE,
+    },
+    button: {
+        text: {
+            idle: palette.JET,
+            hover: palette.EERIE_BLACK,
+        },
+        background: {
+            idle: palette.JONQUIL_ORANGE,
+            hover: palette.AUREOLIN_YELLOW,
+        },
+    },
+    status: {
+        // TODO find better colors for palette
+        success: 'green',
+        error: 'red',
     },
     common: {
         background: palette.EERIE_BLACK,
