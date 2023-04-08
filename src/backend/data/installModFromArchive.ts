@@ -1,4 +1,3 @@
-import _7z from '7zip-min'
 import fs from 'fs'
 import os from 'os'
 import path from 'path'
@@ -14,18 +13,8 @@ import findReadmeFile from './findReadmeFile'
 import getModConfigDirPath from './getModConfigDir'
 import { listMods } from './listMods'
 import loadInstalledMod from './loadInstalledMod'
+import extractModArchive from './extractModArchive'
 
-const _extractModArchive = async (filePath: string) => {
-    const osTmpDir = os.tmpdir()
-    const tmpDirForMod = await fs.promises.mkdtemp(joinPaths(osTmpDir, 'cm-for-ams2-tmp'))
-
-    return new Promise<string>((resolve, reject) => {
-        _7z.unpack(filePath, tmpDirForMod, err => {
-            if (err) return reject(err)
-            resolve(tmpDirForMod)
-        })
-    })
-}
 
 const _findSingleDirectoryPath = async (rootDirectory: string) => {
     const files = await fs.promises.readdir(rootDirectory)
@@ -121,10 +110,9 @@ const _insertDrivelineEntries = async (bootfilesData: BootfilesData, carsData: C
     }
 }
 
-// TODO rename "installModFromArchive", rename file
 const installModFromArchive = async (filePath: string): Promise<void> => {
     // TODO prevent wrongful handling of non-car mods
-    const extractionTargetDir = await _extractModArchive(filePath)
+    const extractionTargetDir = await extractModArchive(filePath)
 
     const { gameContents: gameContentsDir } = await _copyModContent(extractionTargetDir)
     const { carData } = await loadInstalledMod(gameContentsDir)

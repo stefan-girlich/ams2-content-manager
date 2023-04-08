@@ -4,7 +4,10 @@ import { SUPPORTED_ARCHIVE_MIME_TYPES } from '../../config'
 // TODO use this
 type DragAndDropStatus = 'supported_file_dragged' | 'unsupported_file_dragged' | 'none'
 
-const isFileTypeSupported = (mimeType: string) => SUPPORTED_ARCHIVE_MIME_TYPES.includes(mimeType)
+const isFileSupported = ({ name, type }: File) => [
+    // WORKAROUND because file.type is empty string on Win10
+    SUPPORTED_ARCHIVE_MIME_TYPES.includes(type) || name.toLowerCase().endsWith('.7z')
+]
 
 const useModFileDragAndDrop = () => {
     const [pendingFile, setPendingFile] = useState<File>(null)
@@ -28,9 +31,10 @@ const useModFileDragAndDrop = () => {
             event.stopPropagation()
 
             const file = event.dataTransfer.files[0]
+            console.log(file.name)
             // TODO handle multiple files
 
-            if (isFileTypeSupported(file.type)) setPendingFile(file)
+            if (isFileSupported(file)) setPendingFile(file)
             setDragging(false)
         }
 

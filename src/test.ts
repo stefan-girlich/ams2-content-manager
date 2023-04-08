@@ -1,3 +1,4 @@
+import extractModArchive from './backend/data/extractModArchive'
 import listModsAndSyncStatus from './backend/data/listMods'
 import loadInstalledMod from './backend/data/loadInstalledMod'
 import addDrivelineEntry from './backend/driveline/addDrivelineEntry'
@@ -20,7 +21,7 @@ const main = async () => {
 
     // const modDirPath = joinPaths('userdata', 'resources', 'Lamborghini SCV12 v1.4.5.2')
     const modDirPath = joinPaths('userdata', 'resources', 'Ferrari_FXX-K v1.4.5')
-    const modContents = await loadInstalledMod(modDirPath)
+    // const modContents = await loadInstalledMod(modDirPath)
 
     const drivelineFilePath = joinPaths(
         'userdata',
@@ -38,11 +39,14 @@ const main = async () => {
     //     addDrivelineEntry(drivelineFilePath, entry, modContents.carData.id)
     // }
 
-    const entry = modContents.carData.drivelineEntries
-    
+    // ==========================  test: is entry in driveline.rg?  ==========================
+    // const entry = modContents.carData.drivelineEntries
+    // const isIt = await isDrivelineEntryPresent(drivelineFilePath, entry[0])
+    // console.log(isIt)
 
-    const isIt = await isDrivelineEntryPresent(drivelineFilePath, entry[0])
-    console.log(isIt)
+    // ==========================  test: extract archive to tmp dir via native 7z.exe  ==========================
+    const testeePath = '"C:\\Users\\Arno\\projects\\ams2-content-manager\\userdata\\archives\\Ferrari_FXX-K v1.4.5.7z"'
+    await extractModArchive(testeePath)
     
 }
 
