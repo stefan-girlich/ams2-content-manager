@@ -11,7 +11,7 @@ const extractModArchive = async (archiveFilePath: string): Promise<string> => {
     const tmpDirForMod = await fs.promises.mkdtemp(joinPaths(osTmpDir, 'cm-for-ams2-tmp'))
     // console.log('>>>>>', tmpDirForMod)
 
-    const command = `${exePath} x "${archiveFilePath}" -o"${tmpDirForMod}"`
+    const command = `${exePath} x ${archiveFilePath} -o"${tmpDirForMod}"`
     console.log('>>>>>', command)
 
     return new Promise((resolve, reject) => {
