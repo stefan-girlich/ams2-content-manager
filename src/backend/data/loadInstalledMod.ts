@@ -50,6 +50,7 @@ const _parseModFilesWithoutManifest = async (
         name: modName,
         path: modDirPathInModsDir,
         type: 'car_mod',
+        version: null, // TODO determine version; code available in FE
         readmeFilePath,
         manifest: null,
         carData: {

@@ -23,6 +23,7 @@ const loadBootfiles = async (bootfilesDirPath: string): Promise<ModContents> => 
         path: bootfilesDirPath,
         name: path.basename(bootfilesDirPath),
         type: 'bootfiles',
+        version: null, // TODO determine version
         readmeFilePath,
         manifest: null,
         carData: null,

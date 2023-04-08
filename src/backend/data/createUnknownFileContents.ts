@@ -6,6 +6,7 @@ const createUnknownFileContents = (filePath: string): ModContents => {
         path: filePath,
         name: path.basename(filePath),
         type: 'unknown',
+        version: null,
         readmeFilePath: null,
         manifest: null,
         carData: null,
