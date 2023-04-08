@@ -10,7 +10,7 @@ const Root = styled.div`
     display: flex;
     flex-direction: column;
     width: 300px;
-    margin-right: 48px;
+    margin-right: 128px;
 `
 
 const ListSectionTitle = styled.div`

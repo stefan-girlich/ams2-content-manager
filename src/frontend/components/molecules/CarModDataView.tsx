@@ -1,16 +1,19 @@
 import styled from 'styled-components'
 import { CarsData } from '../../../common/@types/ModContents'
 import StyleableProps from '../../@types/StyleableProps'
+import Code from '../atoms/Code'
+import colors from '../../config/colors'
 
 const Root = styled.div`
     flex: 1;
 `
 
 const DrivelineEntryListItem = styled.li`
-    border-left: 4px solid black;
+    color: ${colors.list.itemText.idle}; // TODO
+    /* border-left: 4px solid black;
     padding: 8px 48px;
     margin-bottom: 32px;
-    font-size: 0.6rem;
+    font-size: 0.6rem; */
 `
 
 interface Props extends StyleableProps {
@@ -23,7 +26,9 @@ const CarModDataView = ({ data, className }: Props) => {
             <h3>.crd file paths</h3>
             <ul>
                 {data.vehicleListEntries.map(filePath => (
-                    <li key={filePath}>{filePath}</li>
+                    <li key={filePath}>
+                        <Code>{filePath}</Code>
+                    </li>
                 ))}
             </ul>
 
@@ -31,7 +36,7 @@ const CarModDataView = ({ data, className }: Props) => {
             <ul>
                 {data.drivelineEntries.map((entry, index) => (
                     <DrivelineEntryListItem key={index}>
-                        <pre>{entry}</pre>
+                        <Code>{entry}</Code>
                     </DrivelineEntryListItem>
                 ))}
             </ul>

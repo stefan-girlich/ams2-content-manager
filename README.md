@@ -66,20 +66,22 @@ A single bootfiles version/directory can be in one of the following states:
 -   [AMS2 Bootfiles](https://projectcarsmoddingteam.weebly.com/downloads---automobilista-2.html) by Project Cars Modding Team
 -   [PCarsTools](https://github.com/Nenkai/PCarsTools/), a tool for creating bootfiles from an existing AMS2 installation
 -   [JSGME docs](https://www.tuttovola.org/index.php?action=downloads;sa=downfile&id=1135) (PDF, see section _Command line parameters_, p.17)
+-   [workaround for Win11 filesystem access](https://github.com/electron/electron/issues/28422#issuecomment-1322520014)
 
 # TODO
 
--   parse mod and boot files, e.g. for driveline data from README etc.
-    -   allow partial loading without error
-    -   include bootfiles
-        -   error for multiple bootfiles
-    -   include unsupported
-    -   show state in UI (list and detail)
-        -   list: "traffic light" marker
-        -   detail: info
--   install to bootfiles
-    -   check if already installed
-    -   install to vehicle.list
-    -   install driveline.rg
--   load/extract mod archive files (.7z)
-    -   drag-and-drop
+## now
+
+-   deploy to windows
+    -   check 7z permissions issue
+    -   test deployable bundle
+-   make directories selectable
+    -   store selection
+    -   get windows default config dir?
+-   handle unsupported mods in list
+
+## later
+
+-   get images from /MODS/Lamborghini SCV12 v1.4.5.2/GUI/vehicleimages/vehicleimages_lamborghini_scv12
+-   replace lstat->stat (?)
+-   rename "config" -> "resources"

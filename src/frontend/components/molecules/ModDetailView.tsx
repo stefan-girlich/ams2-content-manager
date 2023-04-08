@@ -2,9 +2,47 @@ import styled from 'styled-components'
 import ModAndSyncStatus from '../../../common/@types/ModAndSyncStatus'
 import StyleableProps from '../../@types/StyleableProps'
 import CarModDataView from './CarModDataView'
+import colors from '../../config/colors'
+import Code from '../atoms/Code'
 
 const Root = styled.div`
     flex: 1;
+    font-weight: 200;
+
+    b {
+        display: inline-block;
+        color: ${colors.list.itemText.idle}; // TODO
+        font-weight: 300;
+        font-size: 0.8rem;
+        border: 0.5px solid ${colors.list.itemText.idle}; // TODO
+        border-radius: 4px;
+        padding: 8px 12px;
+        /* margin-bottom: 32px; */
+    }
+    h1 {
+        color: ${colors.list.sectionTitle}; // TODO
+        font-weight: 400;
+        font-size: 2rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1rem;
+        margin-top: 0;
+    }
+    h2 {
+        margin-top: 48px;
+        margin-bottom: 24px;
+        font-weight: 300;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+    }
+    h3 {
+        margin-top: 0px;
+        margin-bottom: 8px;
+        font-weight: 200;
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+    }
 `
 
 const DrivelineEntryListItem = styled.li`
@@ -24,10 +62,10 @@ const ModDetailView = ({ data, className }: Props) => {
         <Root className={className}>
             <h1>{data.name}</h1>
 
-            {!contents.manifest && <b>no manifest.yml found - values are parsed from README</b>}
+            {!contents.manifest && <b>no manifest.yml found - values parsed from README</b>}
 
             <h2>README file</h2>
-            <span>{contents.readmeFilePath}</span>
+            <Code>{contents.readmeFilePath}</Code>
 
             {!!contents.carData && (
                 <>
