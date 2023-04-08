@@ -2,33 +2,13 @@ import fs from 'fs'
 import Joi from 'joi'
 import path from 'path'
 import yaml from 'yaml'
-import ModManifest, { ModManifestCarEntry } from '../../common/@types/ModManifest'
+import ModManifest, { ModManifestCarEntry, schema } from '../../common/@types/ModManifest'
 import isFileReadable from '../util/isFileReadable'
 import joinPaths from '../util/joinPaths'
 
 export const MANIFEST_FILENAME = 'manifest.yml'
 
-const MANIFEST_SCHEMA = Joi.object<ModManifest>({
-    manifest_version: Joi.string().valid('1.0').required(),
-    name: Joi.string().min(1).required(),
-    version: Joi.string().min(1).required(),
-    min_game_version: Joi.string()
-        .regex(/^\d(\.\d)*$/)
-        .required(),
-    author: Joi.string().min(1).required(),
-    cars: Joi.array()
-        .items(
-            Joi.object({
-                manufacturer: Joi.string().min(1).required(),
-                model: Joi.string().min(1).required(),
-                game_files_dir: Joi.string().min(1).required(),
-                vehicle_list_file: Joi.string().min(1).required(),
-                driveline_entries_file: Joi.string().min(1).required(),
-            })
-        )
-        .min(1)
-        .required(),
-})
+
 
 export const findManifestFilePath = async (directory: string) => {
     const manifestFilePath = path.join(directory, MANIFEST_FILENAME)
@@ -46,7 +26,7 @@ const loadManifest = async (extractModRootDir: string): Promise<ModManifest | nu
     const manifestFileContent = await fs.promises.readFile(manifestFilePath, { encoding: 'utf-8' })
     const manifestContentUnvalidated = yaml.parse(manifestFileContent)
 
-    const { value: manifestData, error } = MANIFEST_SCHEMA.validate(manifestContentUnvalidated)
+    const { value: manifestData, error } = schema.validate(manifestContentUnvalidated)
     if (error) throw error
     const pathsRelativeToRootDir = await Promise.all(
         manifestData.cars.map(async car => {

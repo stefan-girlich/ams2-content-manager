@@ -1,3 +1,5 @@
+import Joi from "joi"
+
 export interface ModManifestCarEntry {
     manufacturer: string
     model: string
@@ -30,6 +32,29 @@ export interface ModManifestCarEntry {
      */
     driveline_entries_file: string
 }
+
+
+export const schema = Joi.object<ModManifest>({
+    manifest_version: Joi.string().valid('1.0').required(),
+    name: Joi.string().min(1).required(),
+    version: Joi.string().min(1).required(),
+    min_game_version: Joi.string()
+        .regex(/^\d(\.\d)*$/)
+        .required(),
+    author: Joi.string().min(1).required(),
+    cars: Joi.array()
+        .items(
+            Joi.object({
+                manufacturer: Joi.string().min(1).required(),
+                model: Joi.string().min(1).required(),
+                game_files_dir: Joi.string().min(1).required(),
+                vehicle_list_file: Joi.string().min(1).required(),
+                driveline_entries_file: Joi.string().min(1).required(),
+            })
+        )
+        .min(1)
+        .required(),
+})
 
 interface ModManifest {
     manifest_version: string
