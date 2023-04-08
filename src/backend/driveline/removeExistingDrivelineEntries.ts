@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { DRIVELINE_ENTRY_REGEX } from '../data/loadInstalledMod'
+import { DRIVELINE_ENTRY_REGEX } from '../common/loadInstalledMod'
 import { buildMarkerLine } from './addDrivelineEntry'
 
 const removeExistingDrivelineEntries = async (drivelineFilePath: string, carModId: string) => {
