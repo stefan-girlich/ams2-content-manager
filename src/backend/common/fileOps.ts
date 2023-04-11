@@ -7,3 +7,7 @@ export const readJsonFile = async (filePath: string) => {
     const contentsString = await readFile(filePath)
     return JSON.parse(contentsString)
 }
+export const writeJsonFile = async (filePath: string, data: any) => {
+    const contentsString = JSON.stringify(data)
+    fs.promises.writeFile(filePath, contentsString)
+}

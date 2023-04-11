@@ -1,21 +1,6 @@
 import fs from 'fs'
-import { app } from 'electron'
-import joinPaths from '../util/joinPaths'
-import { readFile, readJsonFile } from '../common/fileOps'
-
-const userSettingsFileName = 'settings.json'
-
-const buildSettingsFilePath = (parentDirPath?: string) => {
-    if (!parentDirPath) {
-        parentDirPath = app.getPath('userData')
-    }
-
-    return joinPaths(parentDirPath, userSettingsFileName)
-}
-
-const saveSettings = () => {
-
-}
+import { readJsonFile } from '../common/fileOps'
+import buildSettingsFilePath from './buildUserSettings'
 
 const loadUserSettings = async (parentDirPath?: string) => {
     const filePath = buildSettingsFilePath(parentDirPath)
@@ -31,7 +16,6 @@ const loadUserSettings = async (parentDirPath?: string) => {
 
     // TODO validate
     return settings
-
 }
 
 export default loadUserSettings

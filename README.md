@@ -72,12 +72,9 @@ A single bootfiles version/directory can be in one of the following states:
 
 ## now
 
--   deploy to windows
-    -   check 7z permissions issue
-    -   test deployable bundle
--   make directories selectable
-    -   store selection
-    -   get windows default config dir?
+-   let user select 7z.exe file location
+-   let user select AMS2 installation directory
+-   validate settings schema
 -   handle unsupported mods in list
 
 ## later

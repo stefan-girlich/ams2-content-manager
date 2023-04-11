@@ -4,6 +4,9 @@ import loadInstalledMod from './backend/common/loadInstalledMod'
 import addDrivelineEntry from './backend/driveline/addDrivelineEntry'
 import isDrivelineEntryPresent from './backend/driveline/isDrivelineEntryPresent'
 import removeExistingDrivelineEntries from './backend/driveline/removeExistingDrivelineEntries'
+import UserSettings from './backend/settings/entity/UserSettings'
+import loadUserSettings from './backend/settings/loadUserSettings'
+import saveUserSettings from './backend/settings/saveUserSettings'
 import joinPaths from './backend/util/joinPaths'
 import { MODS_DIR } from './config'
 
@@ -45,9 +48,19 @@ const main = async () => {
     // console.log(isIt)
 
     // ==========================  test: extract archive to tmp dir via native 7z.exe  ==========================
-    const testeePath = '"C:\\Users\\Arno\\projects\\ams2-content-manager\\userdata\\archives\\Ferrari_FXX-K v1.4.5.7z"'
-    await extractModArchive(testeePath)
-    
+    // const testeePath = '"C:\\Users\\Arno\\projects\\ams2-content-manager\\userdata\\archives\\Ferrari_FXX-K v1.4.5.7z"'
+    // await extractModArchive(testeePath)
+
+    // ==========================  test: save and load user settings  ==========================
+    const dummyDirPath = joinPaths('userdata', 'resources')
+    const data: UserSettings = {
+        version: '1.0',
+        _7zExeFile: 'foo/7z.exe',
+        gameDir: 'steamapps/common/AMS2',
+    }
+    await saveUserSettings(data, dummyDirPath)
+    const loadedSettings = await loadUserSettings(dummyDirPath)
+    console.log(loadedSettings)
 }
 
 main()
