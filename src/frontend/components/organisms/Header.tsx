@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import { Screen } from '../../../frontend/App'
 import StyleableProps from '../../@types/StyleableProps'
 import colors from '../../config/colors'
 
@@ -68,7 +69,17 @@ const MenuItem = styled.li<{ active?: boolean }>`
         `}
 `
 
-const Header = ({ className }: StyleableProps) => {
+const SCREEN_MENU_ITEMS: { id: Screen; label: string }[] = [
+    { id: 'mods', label: 'Mods' },
+    { id: 'settings', label: 'Settings' },
+]
+
+interface Props extends StyleableProps {
+    activeScreen: Screen
+    onScreenSelect(screen: Screen): void
+}
+
+const Header = ({ activeScreen, onScreenSelect, className }: Props) => {
     // const onSelect = (index: number) => setSelectedModIndex(index)
 
     return (
@@ -78,9 +89,11 @@ const Header = ({ className }: StyleableProps) => {
                 <VersionTag>pre-alpha</VersionTag>
             </Logo>
             <Menu>
-                <MenuItem active>Mods</MenuItem>
-                <MenuItem>Tools</MenuItem>
-                <MenuItem>Settings</MenuItem>
+                {SCREEN_MENU_ITEMS.map(({ id, label }) => (
+                    <MenuItem active={activeScreen === id} onClick={() => onScreenSelect(id)}>
+                        {label}
+                    </MenuItem>
+                ))}
             </Menu>
         </Root>
     )

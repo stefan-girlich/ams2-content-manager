@@ -1,6 +1,6 @@
 import { writeJsonFile } from '../common/fileOps'
 import buildSettingsFilePath from './buildUserSettings'
-import UserSettings, { schema } from './entity/UserSettings'
+import UserSettings, { schema } from '../../common/@types/UserSettings'
 
 const saveUserSettings = async (data: UserSettings, parentDirPath?: string) => {
     const filePath = buildSettingsFilePath(parentDirPath)

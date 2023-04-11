@@ -1,8 +1,9 @@
 import fs from 'fs'
+import UserSettings from '../../common/@types/UserSettings'
 import { readJsonFile } from '../common/fileOps'
 import buildSettingsFilePath from './buildUserSettings'
 
-const loadUserSettings = async (parentDirPath?: string) => {
+const loadUserSettings = async (parentDirPath?: string): Promise<UserSettings> => {
     const filePath = buildSettingsFilePath(parentDirPath)
 
     const stat = await fs.promises.lstat(filePath)
