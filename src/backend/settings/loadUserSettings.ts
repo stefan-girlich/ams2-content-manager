@@ -1,22 +1,19 @@
-import fs from 'fs'
 import UserSettings from '../../common/@types/UserSettings'
-import { readJsonFile } from '../common/fileOps'
+import { fileExists, readJsonFile } from '../common/fileOps'
 import buildSettingsFilePath from './buildUserSettings'
 
 const loadUserSettings = async (parentDirPath?: string): Promise<UserSettings> => {
     const filePath = buildSettingsFilePath(parentDirPath)
 
-    const stat = await fs.promises.lstat(filePath)
-    const fileExists = stat.isFile()
-    if (!fileExists) {
-        console.info(`No config file found, creating one: ${filePath}`)
+    const settingsFileExists = await fileExists(filePath)
+    if (!settingsFileExists) {
+        console.info(`No user settings file found for path: ${filePath}`)
         return null
     }
 
     const settings = await readJsonFile(filePath)
-
-    // TODO validate
-    return settings
+    // TODO validate schema and contents
+    return settings as UserSettings
 }
 
 export default loadUserSettings

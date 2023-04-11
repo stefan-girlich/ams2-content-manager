@@ -24,17 +24,18 @@ const main = async () => {
 
     // const modDirPath = joinPaths('userdata', 'resources', 'Lamborghini SCV12 v1.4.5.2')
     const modDirPath = joinPaths('userdata', 'resources', 'Ferrari_FXX-K v1.4.5')
+    const userSettingsDirPath = joinPaths('userdata', 'user-settings')
     // const modContents = await loadInstalledMod(modDirPath)
 
-    const drivelineFilePath = joinPaths(
-        'userdata',
-        'MODS',
-        '__bootfiles_1.4.6.1',
-        'vehicles',
-        'physics',
-        'driveline',
-        'driveline.rg'
-    )
+    // const drivelineFilePath = joinPaths(
+    //     'userdata',
+    //     'MODS',
+    //     '__bootfiles_1.4.6.1',
+    //     'vehicles',
+    //     'physics',
+    //     'driveline',
+    //     'driveline.rg'
+    // )
 
     // await removeExistingDrivelineEntries(drivelineFilePath, modContents.carData.id)
 
@@ -51,16 +52,17 @@ const main = async () => {
     // const testeePath = '"C:\\Users\\Arno\\projects\\ams2-content-manager\\userdata\\archives\\Ferrari_FXX-K v1.4.5.7z"'
     // await extractModArchive(testeePath)
 
-    // ==========================  test: save and load user settings  ==========================
-    const dummyDirPath = joinPaths('userdata', 'resources')
-    const data: UserSettings = {
-        version: '1.0',
-        _7zExeFile: 'foo/7z.exe',
-        gameDir: 'steamapps/common/AMS2',
-    }
-    await saveUserSettings(data, dummyDirPath)
-    const loadedSettings = await loadUserSettings(dummyDirPath)
-    console.log(loadedSettings)
+    // ==========================  test: read user settings  ==========================
+    const settings = await loadUserSettings(userSettingsDirPath)
+    console.log('checked for settings:', settings)
+
+    await saveUserSettings({
+        _7zExeFile: 'dummy_7z.exe',
+        gameDir: 'dummy_game_dir'
+    }, userSettingsDirPath)
+
+    const settingsReloaded = await loadUserSettings(userSettingsDirPath)
+    console.log('updated settings:', settingsReloaded)
 }
 
 main()

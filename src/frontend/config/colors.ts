@@ -18,6 +18,10 @@ const colors = {
         },
         background: palette.JET,
     },
+    modal: {
+        backdrop: 'rgba(10, 10, 10, 0.9)', // TODO "transparentize(palette.EERIE_BLACK)"
+        background: palette.EERIE_BLACK
+    },
     list: {
         itemBorder: {
             active: palette.AUREOLIN_YELLOW,

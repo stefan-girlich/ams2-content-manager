@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import ModAndSyncStatus from '../../../common/@types/ModAndSyncStatus'
 import StyleableProps from '../../@types/StyleableProps'
 import CarModDataView from './CarModDataView'
+import { H1, H2, H3 } from '../atoms/headlines'
 import colors from '../../config/colors'
 import Code from '../atoms/Code'
 
@@ -19,30 +20,7 @@ const Root = styled.div`
         padding: 8px 12px;
         /* margin-bottom: 32px; */
     }
-    h1 {
-        color: ${colors.list.sectionTitle}; // TODO
-        font-weight: 400;
-        font-size: 2rem;
-        text-transform: uppercase;
-        letter-spacing: 0.1rem;
-        margin-top: 0;
-    }
-    h2 {
-        margin-top: 48px;
-        margin-bottom: 24px;
-        font-weight: 300;
-        font-size: 1.5rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05rem;
-    }
-    h3 {
-        margin-top: 0px;
-        margin-bottom: 8px;
-        font-weight: 200;
-        font-size: 1rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05rem;
-    }
+
 `
 
 const DrivelineEntryListItem = styled.li`
@@ -60,16 +38,16 @@ const ModDetailView = ({ data, className }: Props) => {
     const { contents } = data
     return (
         <Root className={className}>
-            <h1>{data.name}</h1>
+            <H1>{data.name}</H1>
 
             {!contents.manifest && <b>no manifest.yml found - values parsed from README</b>}
 
-            <h2>README file</h2>
+            <H2>README file</H2>
             <Code>{contents.readmeFilePath}</Code>
 
             {!!contents.carData && (
                 <>
-                    <h2>Car data</h2>
+                    <H2>Car data</H2>
                     <CarModDataView data={contents.carData} />
                 </>
             )}

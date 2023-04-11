@@ -46,8 +46,8 @@ ipcMain.handle('list-mods', () => listModsAndSyncStatus(MODS_DIR))
 ipcMain.handle('install-mod', (_: IpcMainInvokeEvent, modArchiveFilePath: string) =>
     installModFromArchive(modArchiveFilePath)
 )
-ipcMain.handle('load-user-settings', () => loadUserSettings())
-ipcMain.handle('save-user-settings', (_, data: UserSettings) => saveUserSettings(data))
+ipcMain.handle('load-user-settings', (_: IpcMainInvokeEvent) => loadUserSettings())
+ipcMain.handle('save-user-settings', (_: IpcMainInvokeEvent, data: UserSettings) => saveUserSettings(data))
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

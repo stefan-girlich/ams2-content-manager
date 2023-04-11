@@ -5,9 +5,10 @@ import OperationStatus from '../@types/OperationStatus'
 interface Result {
     load(): void
     save(data: UserSettings): Promise<void>
-    data: UserSettings
+    data: UserSettings | null
     status: OperationStatus
 }
+
 
 const useUserSettings = (): Result => {
     const [status, setStatus] = useState<OperationStatus>('idle')
@@ -15,24 +16,21 @@ const useUserSettings = (): Result => {
     const load = async () => {
         try {
             setStatus('pending')
-            const settings = await window.electronAPI.loadUserSettings()
-            setData(settings)
-            setStatus('success')
+            const loadedSettings = await window.electronAPI.loadUserSettings()
+            setData(loadedSettings)
         } catch (e) {
             console.error(e)
             setData(null)
             setStatus('error')
         }
     }
-    const save = async (data: UserSettings) => {
+    const save = async (newData: UserSettings) => {
         try {
             setStatus('pending')
-            await window.electronAPI.saveUserSettings(data)
-            setData(data)
-            setStatus('success')
+            await window.electronAPI.saveUserSettings(newData)
         } catch (e) {
             console.error(e)
-            setData(null)
+            setData(newData)
             setStatus('error')
         }
     }

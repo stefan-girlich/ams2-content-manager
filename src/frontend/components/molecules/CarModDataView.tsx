@@ -3,6 +3,7 @@ import { CarsData } from '../../../common/@types/ModContents'
 import StyleableProps from '../../@types/StyleableProps'
 import Code from '../atoms/Code'
 import colors from '../../config/colors'
+import { H3 } from '../atoms/headlines'
 
 const Root = styled.div`
     flex: 1;
@@ -23,7 +24,7 @@ interface Props extends StyleableProps {
 const CarModDataView = ({ data, className }: Props) => {
     return (
         <Root className={className}>
-            <h3>.crd file paths</h3>
+            <H3>.crd file paths</H3>
             <ul>
                 {data.vehicleListEntries.map(filePath => (
                     <li key={filePath}>
@@ -32,7 +33,7 @@ const CarModDataView = ({ data, className }: Props) => {
                 ))}
             </ul>
 
-            <h3>driveline entries</h3>
+            <H3>driveline entries</H3>
             <ul>
                 {data.drivelineEntries.map((entry, index) => (
                     <DrivelineEntryListItem key={index}>
