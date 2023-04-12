@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import StyleableProps from '../../@types/StyleableProps'
-import colors from '../../config/colors'
 import useModsList from '../../hooks/useModsList'
+import BaseContentRoot from '../atoms/BaseContentRoot'
 import PageContentRoot from '../atoms/PageContentRoot'
 import ModDetailView from '../molecules/ModDetailView'
 import ModsList from '../molecules/ModsList'
 import ModInstallerOverlay from './ModInstallerOverlay'
-import ContentRoot from '../atoms/ContentRoot'
 
 const Root = styled(PageContentRoot)`
     display: flex;
     flex-direction: column;
+`
+
+const ContentRoot = styled(BaseContentRoot)`
+    display: flex;
+    flex-direction: row;
 `
 
 const ModManager = ({ className }: StyleableProps) => {

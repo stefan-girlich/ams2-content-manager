@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, IpcMainInvokeEvent } from 'electron'
+import { app, BrowserWindow, ipcMain, IpcMainInvokeEvent, OpenDialogOptions } from 'electron'
 import installModFromArchive from './backend/common/installModFromArchive'
 import listModsAndSyncStatus from './backend/common/listMods'
 import loadUserSettings from './backend/settings/loadUserSettings'
@@ -49,7 +49,7 @@ ipcMain.handle('install-mod', (_: IpcMainInvokeEvent, modArchiveFilePath: string
 )
 ipcMain.handle('load-user-settings', () => loadUserSettings())
 ipcMain.handle('save-user-settings', (_: IpcMainInvokeEvent, data: UserSettings) => saveUserSettings(data))
-ipcMain.handle('request-file-selection', () => requestFileSelection())
+ipcMain.handle('request-file-selection', (_, options: OpenDialogOptions) => requestFileSelection(options))
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

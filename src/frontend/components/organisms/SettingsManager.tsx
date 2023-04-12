@@ -1,17 +1,37 @@
+import { OpenDialogOptions } from 'electron'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import StyleableProps from '../../@types/StyleableProps'
 import colors from '../../config/colors'
 import useUserSettings from '../../hooks/useUserSettings'
-import ContentRoot from '../atoms/ContentRoot'
+import BaseContentRoot from '../atoms/BaseContentRoot'
 import PageContentRoot from '../atoms/PageContentRoot'
 import FilePathInput from '../molecules/FilePathInput'
+
+const _7zExeDialogOptions: OpenDialogOptions = {
+    properties: ['openFile'],
+    filters: [
+        {
+            name: '7z.exe file',
+            extensions: ['.exe'],
+        },
+    ],
+}
+
+const gameDirDialogOptions: OpenDialogOptions = {
+    properties: ['openDirectory'],
+}
 
 const Root = styled(PageContentRoot)`
     display: flex;
     flex-direction: column;
     background: ${colors.common.background};
     color: ${colors.common.text};
+`
+
+const ContentRoot = styled(BaseContentRoot)`
+    display: flex;
+    flex-direction: column;
 `
 
 const BlockingOverlay = styled.div`
@@ -39,6 +59,7 @@ const SettingsManager = ({ className }: StyleableProps) => {
 
     const onDialogOpenStateChange = (open: boolean) => setNativeDialogOpen(open)
 
+    const onGameDirPathSelect = (gameDir: string) => save({ ...data, gameDir })
     const on7zExeFilePathSelect = (_7zExeFile: string) => save({ ...data, _7zExeFile })
 
     if (!data) return null
@@ -47,9 +68,18 @@ const SettingsManager = ({ className }: StyleableProps) => {
         <Root className={className}>
             <ContentRoot>
                 <SettingsFilePathInput
-                    label={'7z.exe file path'}
+                    label={'game directory path'}
+                    filePath={data.gameDir}
+                    options={gameDirDialogOptions}
                     onDialogOpenStateChange={onDialogOpenStateChange}
+                    onFilePathSelect={onGameDirPathSelect}
+                />
+
+                <SettingsFilePathInput
+                    label={'7z.exe file path'}
                     filePath={data._7zExeFile}
+                    options={_7zExeDialogOptions}
+                    onDialogOpenStateChange={onDialogOpenStateChange}
                     onFilePathSelect={on7zExeFilePathSelect}
                 />
             </ContentRoot>

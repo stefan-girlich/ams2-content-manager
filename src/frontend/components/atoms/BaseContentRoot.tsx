@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import colors from '../../config/colors'
 
-const ContentRoot = styled.div`
+const BaseContentRoot = styled.div`
     flex: 1;
     display: flex;
     flex-direction: row;
@@ -10,4 +10,4 @@ const ContentRoot = styled.div`
     padding: 48px;
 `
 
-export default ContentRoot
+export default BaseContentRoot

@@ -1,16 +1,7 @@
-import { dialog } from 'electron'
+import { OpenDialogOptions, dialog } from 'electron'
 
-const requestFileSelection = async () => {
-    // TODO parametrize
-    return await dialog.showOpenDialog({
-        properties: ['openFile'],
-        filters: [
-            {
-                name: '7z.exe file',
-                extensions: ['.exe'],
-            },
-        ],
-    })
+const requestFileSelection = async (options: OpenDialogOptions) => {
+    return await dialog.showOpenDialog(options)
 }
 
 export default requestFileSelection

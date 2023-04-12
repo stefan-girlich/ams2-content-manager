@@ -1,4 +1,4 @@
-import { OpenDialogReturnValue } from 'electron'
+import { OpenDialogOptions, OpenDialogReturnValue } from 'electron'
 import { useState } from 'react'
 import styled from 'styled-components'
 import ModAndSyncStatus from '../common/@types/ModAndSyncStatus'
@@ -16,7 +16,7 @@ declare global {
             installMod: (modArchiveFilePath: string) => Promise<void>
             loadUserSettings: () => Promise<UserSettings>
             saveUserSettings: (data: UserSettings) => Promise<UserSettings>
-            requestFileSelection: () => Promise<OpenDialogReturnValue>
+            requestFileSelection: (options: OpenDialogOptions) => Promise<OpenDialogReturnValue>
         }
     }
 }

@@ -27,9 +27,9 @@ const useUserSettings = (): Result => {
         try {
             setStatus('pending')
             await window.electronAPI.saveUserSettings(newData)
+            setData(newData)
         } catch (e) {
             console.error(e)
-            setData(newData)
             setStatus('error')
         }
     }
