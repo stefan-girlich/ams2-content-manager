@@ -3,10 +3,12 @@ import * as path from 'path'
 import ModAndSyncStatus, { SyncStatus } from '../../common/@types/ModAndSyncStatus'
 import ModContents from '../../common/@types/ModContents'
 import isDrivelineEntryPresent from '../driveline/isDrivelineEntryPresent'
+import loadUserSettings from '../settings/loadUserSettings'
 import areAllTrue from '../util/everyAsync'
+import isVehicleListEntryPresent from '../vehiclelist/isVehicleListEntryPresent'
 import createUnknownFileContents from './createUnknownFileContents'
 import findBootfiles from './findBootfiles'
-import isVehicleListEntryPresent from '../vehiclelist/isVehicleListEntryPresent'
+import getModsDir from './getModsDir'
 import loadBootfiles from './loadBootfiles'
 import loadInstalledMod from './loadInstalledMod'
 
@@ -62,8 +64,11 @@ export const listMods = async (modsDirPath: string): Promise<ModContents[]> => {
     return loadedModsAndBootfilesInclHidden.filter(item => item !== null)
 }
 
-const listModsAndSyncStatus = async (modsDirPath: string): Promise<ModAndSyncStatus[]> => {
-    const loadedMods = await listMods(modsDirPath)
+const listModsAndSyncStatus = async (): Promise<ModAndSyncStatus[]> => {
+    const { gameDir } = await loadUserSettings()
+    if (!gameDir) throw new Error('Game directory not selected yet')
+    const modsDir = getModsDir(gameDir)
+    const loadedMods = await listMods(modsDir)
     const bootfiles = findBootfiles(loadedMods)
     return Promise.all(loadedMods.map(mod => _mapSyncStatus(mod, bootfiles)))
 }

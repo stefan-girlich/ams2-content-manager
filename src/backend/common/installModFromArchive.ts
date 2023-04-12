@@ -1,20 +1,19 @@
 import fs from 'fs'
-import os from 'os'
 import path from 'path'
 import { BootfilesData, CarsData } from '../../common/@types/ModContents'
-import { MODS_DIR } from '../../config'
 import addDrivelineEntry from '../driveline/addDrivelineEntry'
 import isDrivelineEntryPresent from '../driveline/isDrivelineEntryPresent'
 import joinPaths from '../util/joinPaths'
 import addVehicleListEntry from '../vehiclelist/addVehicleListEntry'
 import isVehicleListEntryPresent from '../vehiclelist/isVehicleListEntryPresent'
+import extractModArchive from './extractModArchive'
 import findBootfiles from './findBootfiles'
 import findReadmeFile from './findReadmeFile'
 import getModConfigDirPath from './getModConfigDir'
 import { listMods } from './listMods'
 import loadInstalledMod from './loadInstalledMod'
-import extractModArchive from './extractModArchive'
-
+import loadUserSettings from '../settings/loadUserSettings'
+import getModsDir from './getModsDir'
 
 const _findSingleDirectoryPath = async (rootDirectory: string) => {
     const files = await fs.promises.readdir(rootDirectory)
@@ -39,7 +38,7 @@ interface ModDestinationPaths {
     resources: string
 }
 
-const _copyModContent = async (extractionDir: string): Promise<ModDestinationPaths> => {
+const _copyModContent = async (modsDir: string, extractionDir: string): Promise<ModDestinationPaths> => {
     // TODO add support for manifest provided in archive
     // const manifestSrcPath = await findManifestFilePath(extractionDir)
     // if (manifestSrcPath) {
@@ -50,17 +49,17 @@ const _copyModContent = async (extractionDir: string): Promise<ModDestinationPat
 
     // TODO use other dir name for resources dir?
     const gameDirSrcPath = await _findSingleDirectoryPath(extractionDir)
-    const gameDirName = path.basename(gameDirSrcPath)
+    const modContentsDirName = path.basename(gameDirSrcPath)
     const readmeSrcPath = await findReadmeFile(extractionDir)
     const readmeFileName = path.basename(readmeSrcPath)
 
-    const modResourcesDir = await getModConfigDirPath(gameDirName)
+    const modResourcesDir = await getModConfigDirPath(modContentsDirName)
     await fs.promises.mkdir(modResourcesDir, { recursive: true })
 
     const readmeDestPath = joinPaths(modResourcesDir, readmeFileName)
     await fs.promises.copyFile(readmeSrcPath, readmeDestPath)
 
-    const gameDirDestPath = joinPaths(MODS_DIR, gameDirName)
+    const gameDirDestPath = joinPaths(modsDir, modContentsDirName)
 
     // TODO file bug report? fs.promises.cp fails with code "EISDIR" despite "recursive: true"
     return new Promise((resolve, reject) => {
@@ -112,12 +111,16 @@ const _insertDrivelineEntries = async (bootfilesData: BootfilesData, carsData: C
 
 const installModFromArchive = async (filePath: string): Promise<void> => {
     // TODO prevent wrongful handling of non-car mods
+    const { gameDir } = await loadUserSettings()
+    if (!gameDir) throw new Error('Game directory not selected yet')
+    const modsDir = getModsDir(gameDir)
+
     const extractionTargetDir = await extractModArchive(filePath)
 
-    const { gameContents: gameContentsDir } = await _copyModContent(extractionTargetDir)
+    const { gameContents: gameContentsDir } = await _copyModContent(modsDir, extractionTargetDir)
     const { carData } = await loadInstalledMod(gameContentsDir)
 
-    const allMods = await listMods(MODS_DIR)
+    const allMods = await listMods(modsDir)
     const { bootfilesData } = findBootfiles(allMods)
 
     await _insertVehicleListEntries(bootfilesData, carData)

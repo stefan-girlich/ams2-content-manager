@@ -8,7 +8,8 @@ import UserSettings from './common/@types/UserSettings'
 import loadUserSettings from './backend/settings/loadUserSettings'
 import saveUserSettings from './backend/settings/saveUserSettings'
 import joinPaths from './backend/util/joinPaths'
-import { MODS_DIR } from './config'
+
+export const MODS_DIR = joinPaths('userdata', 'MODS')
 
 // TODO move to dedicated test file structure, use test runner like Jest
 
