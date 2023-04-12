@@ -12,6 +12,11 @@ const Root = styled.div`
 const InputFieldRow = styled.div`
     display: flex;
     flex-direction: row;
+    width: 100%;
+`
+
+const InputFieldFillingRow = styled(InputField)`
+    flex: 1;
 `
 
 const IconButton = styled(Button)`
@@ -41,7 +46,7 @@ const FilePathInput = ({ label, filePath, onDialogOpenStateChange = noOp, onFile
         <Root className={className}>
             <InputLabel>{label}</InputLabel>
             <InputFieldRow>
-                <InputField disabled>{filePath}</InputField>
+                <InputFieldFillingRow disabled value={filePath} />
                 <IconButton onClick={onClick} label="📂" />
             </InputFieldRow>
         </Root>

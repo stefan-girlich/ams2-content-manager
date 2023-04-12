@@ -9,7 +9,6 @@ interface Result {
     status: OperationStatus
 }
 
-
 const useUserSettings = (): Result => {
     const [status, setStatus] = useState<OperationStatus>('idle')
     const [data, setData] = useState<UserSettings>(null)

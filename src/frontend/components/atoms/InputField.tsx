@@ -15,6 +15,11 @@ const InputField = styled.input`
         border-color: ${colors.inputField.border.active};
         outline: none;
     }
+
+    ::selection {
+        background: ${colors.inputField.text.selectedOutline};
+        color: ${colors.inputField.text.selected};
+    }
 `
 
 export default InputField

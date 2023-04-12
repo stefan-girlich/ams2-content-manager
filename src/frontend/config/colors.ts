@@ -46,6 +46,8 @@ const colors = {
         text: {
             idle: palette.LIGHT_GRAY,
             active: palette.AUREOLIN_YELLOW,
+            selected: palette.EERIE_BLACK,
+            selectedOutline: palette.JONQUIL_ORANGE,
         },
         border: {
             idle: palette.LIGHT_GRAY,

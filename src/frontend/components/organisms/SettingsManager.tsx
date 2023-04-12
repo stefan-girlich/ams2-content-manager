@@ -24,6 +24,10 @@ const BlockingOverlay = styled.div`
     background: rgba(100, 100, 100, 0.8); // TODO from theme
 `
 
+const SettingsFilePathInput = styled(FilePathInput)`
+    width: 512px;
+`
+
 const SettingsManager = ({ className }: StyleableProps) => {
     // TODO handle error
     const { data, status, load, save } = useUserSettings()
@@ -35,10 +39,19 @@ const SettingsManager = ({ className }: StyleableProps) => {
 
     const onDialogOpenStateChange = (open: boolean) => setNativeDialogOpen(open)
 
+    const on7zExeFilePathSelect = (_7zExeFile: string) => save({ ...data, _7zExeFile })
+
+    if (!data) return null
+
     return (
         <Root className={className}>
             <ContentRoot>
-                <FilePathInput label={'7z.exe file path'} onDialogOpenStateChange={onDialogOpenStateChange} />
+                <SettingsFilePathInput
+                    label={'7z.exe file path'}
+                    onDialogOpenStateChange={onDialogOpenStateChange}
+                    filePath={data._7zExeFile}
+                    onFilePathSelect={on7zExeFilePathSelect}
+                />
             </ContentRoot>
             {isNativeDialogOpen && <BlockingOverlay />}
         </Root>
