@@ -1,5 +1,5 @@
 import extractModArchive from './backend/common/extractModArchive'
-import listModsAndSyncStatus from './backend/common/listMods'
+import listModsAndSyncStatus from './backend/common/listModsAndSyncStatus'
 import loadInstalledMod from './backend/common/loadInstalledMod'
 import addDrivelineEntry from './backend/driveline/addDrivelineEntry'
 import isDrivelineEntryPresent from './backend/driveline/isDrivelineEntryPresent'

@@ -1,6 +1,6 @@
 import UserSettings from '../../common/@types/UserSettings'
 import { fileExists, readJsonFile } from '../common/fileOps'
-import buildSettingsFilePath from './buildUserSettings'
+import buildUserSettingsFilePath from './buildUserSettingsFilePath'
 
 const DEFAULT_SETTINGS: UserSettings = {
     version: '1.0',
@@ -9,7 +9,7 @@ const DEFAULT_SETTINGS: UserSettings = {
 }
 
 const loadUserSettings = async (parentDirPath?: string): Promise<UserSettings> => {
-    const filePath = buildSettingsFilePath(parentDirPath)
+    const filePath = buildUserSettingsFilePath(parentDirPath)
 
     const settingsFileExists = await fileExists(filePath)
     if (!settingsFileExists) {

@@ -72,13 +72,13 @@ A single bootfiles version/directory can be in one of the following states:
 
 ## now
 
--   let user select 7z.exe file location
--   let user select AMS2 installation directory
--   validate settings schema
--   handle unsupported mods in list
+-   add workaround for common mods: allow "AMS2 files" or similar
+-   handle unsupported mods in list: list them with note
+-   add splash screen
 
 ## later
 
+-   validate settings schema on read
 -   get images from /MODS/Lamborghini SCV12 v1.4.5.2/GUI/vehicleimages/vehicleimages_lamborghini_scv12
 -   replace lstat->stat (?)
 -   rename "config" -> "resources"

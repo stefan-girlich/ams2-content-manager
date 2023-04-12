@@ -3,7 +3,7 @@ import * as path from 'path'
 import ModContents from '../../common/@types/ModContents'
 import createUnknownFileContents from './createUnknownFileContents'
 import findReadmeFile from './findReadmeFile'
-import getModConfigDirPath from './getModConfigDir'
+import buildModConfigDirPath from './buildModConfigDirPath'
 import loadManifest from './loadManifest'
 
 const CRD_LINE_REGEX = /^.*\.crd$/gim
@@ -67,7 +67,7 @@ const _parseModFilesWithoutManifest = async (
 // TODO allow modName as argument, content path can be derived: MODS/<modName>
 const loadInstalledMod = async (modDirPathInModsDir: string): Promise<ModContents> => {
     const modName = path.basename(modDirPathInModsDir)
-    const modConfigDir = await getModConfigDirPath(modName)
+    const modConfigDir = await buildModConfigDirPath(modName)
     const readmeFilePath = await findReadmeFile(modConfigDir)
 
     // TODO manifest disabled temporarily

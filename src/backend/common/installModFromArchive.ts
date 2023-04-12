@@ -9,8 +9,8 @@ import isVehicleListEntryPresent from '../vehiclelist/isVehicleListEntryPresent'
 import extractModArchive from './extractModArchive'
 import findBootfiles from './findBootfiles'
 import findReadmeFile from './findReadmeFile'
-import getModConfigDirPath from './getModConfigDir'
-import { listMods } from './listMods'
+import buildModConfigDirPath from './buildModConfigDirPath'
+import { listMods } from './listModsAndSyncStatus'
 import loadInstalledMod from './loadInstalledMod'
 import loadUserSettings from '../settings/loadUserSettings'
 import getModsDir from './getModsDir'
@@ -53,7 +53,7 @@ const _copyModContent = async (modsDir: string, extractionDir: string): Promise<
     const readmeSrcPath = await findReadmeFile(extractionDir)
     const readmeFileName = path.basename(readmeSrcPath)
 
-    const modResourcesDir = await getModConfigDirPath(modContentsDirName)
+    const modResourcesDir = await buildModConfigDirPath(modContentsDirName)
     await fs.promises.mkdir(modResourcesDir, { recursive: true })
 
     const readmeDestPath = joinPaths(modResourcesDir, readmeFileName)
