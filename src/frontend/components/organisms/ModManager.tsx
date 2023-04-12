@@ -7,19 +7,11 @@ import PageContentRoot from '../atoms/PageContentRoot'
 import ModDetailView from '../molecules/ModDetailView'
 import ModsList from '../molecules/ModsList'
 import ModInstallerOverlay from './ModInstallerOverlay'
+import ContentRoot from '../atoms/ContentRoot'
 
 const Root = styled(PageContentRoot)`
     display: flex;
     flex-direction: column;
-`
-
-const MainContent = styled.div`
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    background: ${colors.common.background};
-    color: ${colors.common.text};
-    padding: 48px;
 `
 
 const ModManager = ({ className }: StyleableProps) => {
@@ -37,7 +29,7 @@ const ModManager = ({ className }: StyleableProps) => {
 
     return (
         <Root className={className}>
-            <MainContent>
+            <ContentRoot>
                 {data && (
                     <ModsList
                         data={data}
@@ -47,7 +39,7 @@ const ModManager = ({ className }: StyleableProps) => {
                     />
                 )}
                 {data?.length && <ModDetailView data={data[selectedModIndex]} />}
-            </MainContent>
+            </ContentRoot>
 
             <ModInstallerOverlay onInstallSuccess={onInstallSuccess} />
         </Root>

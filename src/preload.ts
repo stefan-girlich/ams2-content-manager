@@ -9,4 +9,5 @@ contextBridge.exposeInMainWorld('electronAPI', {
     installMod: (modArchiveFilePath: string) => ipcRenderer.invoke('install-mod', modArchiveFilePath),
     loadUserSettings: () => ipcRenderer.invoke('load-user-settings'),
     saveUserSettings: (data: UserSettings) => ipcRenderer.invoke('save-user-settings', data),
+    requestFileSelection: () => ipcRenderer.invoke('request-file-selection'),
 })

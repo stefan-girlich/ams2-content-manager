@@ -16,6 +16,7 @@ const Root = styled.button`
     text-transform: uppercase;
     color: ${colors.button.text.idle};
     background-color: ${colors.button.background.idle};
+    cursor: pointer;
 
     :hover {
         color: ${colors.button.text.hover};

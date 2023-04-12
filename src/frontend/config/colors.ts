@@ -20,7 +20,7 @@ const colors = {
     },
     modal: {
         backdrop: 'rgba(10, 10, 10, 0.9)', // TODO "transparentize(palette.EERIE_BLACK)"
-        background: palette.EERIE_BLACK
+        background: palette.EERIE_BLACK,
     },
     list: {
         itemBorder: {
@@ -42,6 +42,20 @@ const colors = {
             hover: palette.AUREOLIN_YELLOW,
         },
     },
+    inputField: {
+        text: {
+            idle: palette.LIGHT_GRAY,
+            active: palette.AUREOLIN_YELLOW,
+        },
+        border: {
+            idle: palette.LIGHT_GRAY,
+            active: palette.AUREOLIN_YELLOW,
+        },
+        background: {
+            idle: palette.EERIE_BLACK,
+            active: palette.JET,
+        },
+    },
     status: {
         // TODO find better colors for palette
         success: 'green',
@@ -51,6 +65,7 @@ const colors = {
         background: palette.EERIE_BLACK,
         text: palette.WHITE,
         textSecondary: palette.LIGHT_GRAY,
+        textLabel: palette.JONQUIL_ORANGE,
         textHighlighted: palette.AUREOLIN_YELLOW,
         highlightedBackground: palette.JONQUIL_ORANGE,
         textOnHighlightedBackground: palette.JET,
