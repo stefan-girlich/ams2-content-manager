@@ -73,7 +73,7 @@ const ModsListSublist = ({ data, title, selectedModName, onSelect, className }: 
                 {data.map((mod, index) => (
                     <ListItem key={index} selected={selectedModName === mod.name} onClick={() => onSelect(mod.name)}>
                         <ModName>{mod.name}</ModName>
-                        <SyncStatusMarker status={mod.status} />
+                        {mod.status !== 'static' && <SyncStatusMarker status={mod.status} />}
                     </ListItem>
                 ))}
             </List>
