@@ -61,22 +61,17 @@ const ModName = styled.div`
 interface Props extends StyleableProps {
     data: ModAndSyncStatus[]
     title: string
-    selectedIndex: number
-    indexOffset: number
-    onSelect(index: number): void
+    selectedModName: string
+    onSelect(name: string): void
 }
 
-const ModsListSublist = ({ data, title, selectedIndex, indexOffset, onSelect, className }: Props) => {
+const ModsListSublist = ({ data, title, selectedModName, onSelect, className }: Props) => {
     return (
         <Root className={className}>
             <Title>{title}</Title>
             <List>
                 {data.map((mod, index) => (
-                    <ListItem
-                        key={index}
-                        selected={selectedIndex === index + indexOffset}
-                        onClick={() => onSelect(index + indexOffset)}
-                    >
+                    <ListItem key={index} selected={selectedModName === mod.name} onClick={() => onSelect(mod.name)}>
                         <ModName>{mod.name}</ModName>
                         <SyncStatusMarker status={mod.status} />
                     </ListItem>

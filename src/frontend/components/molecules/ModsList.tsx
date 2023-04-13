@@ -16,12 +16,12 @@ const Toolbar = styled.div`
 
 interface Props extends StyleableProps {
     data: ModAndSyncStatus[]
-    selectedIndex: number
-    onSelect(index: number): void
+    selectedModName: string
+    onSelect(name: string): void
     onRequestReload(): void
 }
 
-const ModsList = ({ data, selectedIndex, onSelect, onRequestReload, className }: Props) => {
+const ModsList = ({ data, selectedModName, onSelect, onRequestReload, className }: Props) => {
     const modsByCategory = useMemo(() => {
         return {
             car: data.filter(x => !!x.contents.carData),
@@ -35,24 +35,21 @@ const ModsList = ({ data, selectedIndex, onSelect, onRequestReload, className }:
             <ModsListSublist
                 data={modsByCategory.car}
                 title={'Cars'}
-                selectedIndex={selectedIndex}
-                indexOffset={0}
+                selectedModName={selectedModName}
                 onSelect={onSelect}
             />
 
             <ModsListSublist
                 data={modsByCategory.bootfiles}
                 title={'Bootfiles'}
-                selectedIndex={selectedIndex}
-                indexOffset={modsByCategory.car.length}
+                selectedModName={selectedModName}
                 onSelect={onSelect}
             />
 
             <ModsListSublist
                 data={modsByCategory.other}
                 title={'Other'}
-                selectedIndex={selectedIndex}
-                indexOffset={modsByCategory.car.length + modsByCategory.bootfiles.length}
+                selectedModName={selectedModName}
                 onSelect={onSelect}
             />
 

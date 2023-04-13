@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import StyleableProps from '../../@types/StyleableProps'
 import useModsList from '../../hooks/useModsList'
@@ -20,9 +20,7 @@ const ContentRoot = styled(BaseContentRoot)`
 
 const ModManager = ({ className }: StyleableProps) => {
     const { fetch, data, status } = useModsList()
-    const [selectedModIndex, setSelectedModIndex] = useState(0)
-    console.log(data)
-    
+    const [selectedModName, setSelectedModName] = useState<string>(null)
 
     useEffect(() => {
         fetch()
@@ -30,8 +28,16 @@ const ModManager = ({ className }: StyleableProps) => {
 
     const onInstallSuccess = () => fetch()
 
-    const onSelect = (index: number) => setSelectedModIndex(index)
+    const onSelect = (name: string) => setSelectedModName(name)
     const onRequestReload = () => fetch()
+
+    const selectedMod = useMemo(() => {
+        if (!data) return null
+        if (!selectedModName) {
+            return data.length ? data[0] : null
+        }
+        return data.find(({ name }) => name === selectedModName)
+    }, [data, selectedModName])
 
     return (
         <Root className={className}>
@@ -39,12 +45,12 @@ const ModManager = ({ className }: StyleableProps) => {
                 {data && (
                     <ModsList
                         data={data}
-                        selectedIndex={selectedModIndex}
+                        selectedModName={selectedModName}
                         onSelect={onSelect}
                         onRequestReload={onRequestReload}
                     />
                 )}
-                {data?.length && <ModDetailView data={data[selectedModIndex]} />}
+                {selectedMod && <ModDetailView data={selectedMod} />}
             </ContentRoot>
 
             <ModInstallerOverlay onInstallSuccess={onInstallSuccess} />

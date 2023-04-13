@@ -28,19 +28,24 @@ interface Props extends StyleableProps {
 
 const ModDetailView = ({ data, className }: Props) => {
     const { contents } = data
+    const isUnknownDir = contents.type === 'unknown'
     return (
         <Root className={className}>
             <H1>{data.name}</H1>
 
-            {!contents.manifest && <b>no manifest.yml found - values parsed from README</b>}
-
-            <H2>README file</H2>
-            <Code>{contents.readmeFilePath}</Code>
-
-            {!!contents.carData && (
+            {!isUnknownDir && (
                 <>
-                    <H2>Car data</H2>
-                    <CarModDataView data={contents.carData} />
+                    {!contents.manifest && <b>no manifest.yml found - values parsed from README</b>}
+
+                    <H2>README file</H2>
+                    <Code>{contents.readmeFilePath}</Code>
+
+                    {!!contents.carData && (
+                        <>
+                            <H2>Car data</H2>
+                            <CarModDataView data={contents.carData} />
+                        </>
+                    )}
                 </>
             )}
         </Root>
