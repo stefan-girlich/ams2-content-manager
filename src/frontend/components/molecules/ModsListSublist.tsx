@@ -56,6 +56,8 @@ const ListItem = styled.li<{ selected: boolean }>`
 
 const ModName = styled.div`
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 `
 
 interface Props extends StyleableProps {

@@ -31,6 +31,10 @@ const ModManager = ({ className }: StyleableProps) => {
     const onSelect = (name: string) => setSelectedModName(name)
     const onRequestReload = () => fetch()
 
+    useEffect(() => {
+        if (data?.length) setSelectedModName(data[0].name)
+    }, [data])
+
     const selectedMod = useMemo(() => {
         if (!data) return null
         if (!selectedModName) {

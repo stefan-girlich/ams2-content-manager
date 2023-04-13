@@ -6,12 +6,14 @@ import Button from '../atoms/Button'
 import ModsListSublist from './ModsListSublist'
 
 const Root = styled.div`
-    width: 300px;
+    width: 360px;
+    flex-shrink: 0;
     margin-right: 128px;
 `
 
 const Toolbar = styled.div`
     margin-top: auto;
+    margin-left: calc(4px + 16px); // TODO use variables
 `
 
 interface Props extends StyleableProps {
