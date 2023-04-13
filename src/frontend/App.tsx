@@ -31,7 +31,7 @@ const SCREENS = ['mods', 'settings'] as const
 export type Screen = (typeof SCREENS)[number]
 
 const App = () => {
-    const [screen, setScreen] = useState<Screen>(SCREENS[1])
+    const [screen, setScreen] = useState<Screen>(SCREENS[0])
     const onScreenSelect = (selectedScreen: Screen) => setScreen(selectedScreen)
     return (
         <Root>
