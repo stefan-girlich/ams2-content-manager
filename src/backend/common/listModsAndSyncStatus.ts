@@ -11,6 +11,7 @@ import findBootfiles from './findBootfiles'
 import getModsDir from './getModsDir'
 import loadBootfiles from './loadBootfiles'
 import loadInstalledMod from './loadInstalledMod'
+import { fileExists } from './fileOps'
 
 const BOOT_FILES_DIR_REGEX = '__bootfiles_.+'
 
@@ -49,9 +50,8 @@ export const listMods = async (modsDirPath: string): Promise<ModContents[]> => {
         files.map(async fileName => {
             if (fileName.startsWith('.')) return null
             const fullPath = path.join(modsDirPath, fileName)
-            const stat = await fs.promises.lstat(fullPath)
 
-            const isDir = stat.isDirectory()
+            const isDir = fileExists(fullPath, true)
             if (!isDir) return createUnknownFileContents(fullPath)
 
             const isBootfiles = !!fileName.match(BOOT_FILES_DIR_REGEX)
@@ -66,7 +66,7 @@ export const listMods = async (modsDirPath: string): Promise<ModContents[]> => {
 
 const listModsAndSyncStatus = async (): Promise<ModAndSyncStatus[]> => {
     const { gameDir } = await loadUserSettings()
-    if (!gameDir) throw new Error('Game directory not selected yet')
+    if (!gameDir) throw new Error('Game directory not selected yet') // TODO fail silently, return []?
     const modsDir = getModsDir(gameDir)
     const loadedMods = await listMods(modsDir)
     const bootfiles = findBootfiles(loadedMods)

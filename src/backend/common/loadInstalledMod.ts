@@ -5,6 +5,7 @@ import createUnknownFileContents from './createUnknownFileContents'
 import findReadmeFile from './findReadmeFile'
 import buildModConfigDirPath from './buildModConfigDirPath'
 import loadManifest from './loadManifest'
+import { fileExists } from './fileOps'
 
 const CRD_LINE_REGEX = /^.*\.crd$/gim
 const DRIVELINE_LINES_REGEX = /^RECORD.*$(\r\n|.)*?\r\n^\s*$/gim
@@ -68,15 +69,16 @@ const _parseModFilesWithoutManifest = async (
 const loadInstalledMod = async (modDirPathInModsDir: string): Promise<ModContents> => {
     const modName = path.basename(modDirPathInModsDir)
     const modConfigDir = await buildModConfigDirPath(modName)
-    const readmeFilePath = await findReadmeFile(modConfigDir)
 
     // TODO manifest disabled temporarily
     const manifest = false && (await loadManifest(modDirPathInModsDir))
 
-    if (!modConfigDir) return createUnknownFileContents(modConfigDir)
+    const modConfigDirExists = await fileExists(modConfigDir, true)
+    if (!modConfigDirExists) return createUnknownFileContents(modDirPathInModsDir)
 
     if (!manifest) {
         console.warn('fallback: parsing mod data from file contents')
+        const readmeFilePath = await findReadmeFile(modConfigDir)
         return _parseModFilesWithoutManifest(modDirPathInModsDir, readmeFilePath)
     }
 

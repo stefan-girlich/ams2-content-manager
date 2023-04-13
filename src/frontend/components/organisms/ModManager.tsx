@@ -21,6 +21,8 @@ const ContentRoot = styled(BaseContentRoot)`
 const ModManager = ({ className }: StyleableProps) => {
     const { fetch, data, status } = useModsList()
     const [selectedModIndex, setSelectedModIndex] = useState(0)
+    console.log(data)
+    
 
     useEffect(() => {
         fetch()

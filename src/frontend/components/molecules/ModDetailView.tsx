@@ -1,10 +1,10 @@
 import styled from 'styled-components'
 import ModAndSyncStatus from '../../../common/@types/ModAndSyncStatus'
 import StyleableProps from '../../@types/StyleableProps'
-import CarModDataView from './CarModDataView'
-import { H1, H2, H3 } from '../atoms/headlines'
 import colors from '../../config/colors'
 import Code from '../atoms/Code'
+import { H1, H2 } from '../atoms/headlines'
+import CarModDataView from './CarModDataView'
 
 const Root = styled.div`
     flex: 1;
@@ -20,14 +20,6 @@ const Root = styled.div`
         padding: 8px 12px;
         /* margin-bottom: 32px; */
     }
-
-`
-
-const DrivelineEntryListItem = styled.li`
-    border-left: 4px solid black;
-    padding: 8px 48px;
-    margin-bottom: 32px;
-    font-size: 0.6rem;
 `
 
 interface Props extends StyleableProps {
