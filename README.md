@@ -1,3 +1,10 @@
+# This project is currently not under development
+
+Please check out https://github.com/OpenSimTools/AMS2CM/ for a fully functional solution with downloadable releases.
+
+As of the time of writing (April 15, 2023) the linked tool only works via command line (Windowes PowerShell), but the maintainer is planning
+to add a graphical user interface.
+
 # Content Manager for Automobilista 2
 
 ## Status quo
@@ -72,6 +79,7 @@ A single bootfiles version/directory can be in one of the following states:
 
 ## now
 
+-   use 7z.exe from given path, replace hardcoded path
 -   add workaround for common mods: allow "AMS2 files" or similar
 -   handle unsupported mods in list: list them with note
 -   add splash screen
